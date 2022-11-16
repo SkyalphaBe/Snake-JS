@@ -1,0 +1,12 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+canvas{
+    height: 80%;
+    width: 80%;
+    background-color: green;
+}
+
