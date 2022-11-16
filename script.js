@@ -48,7 +48,6 @@ document.addEventListener('keydown',(evt)=>{
             direction='droite';
             break;
     }
-    deplacer(direction);
 });
 
 function deplacer(direction){
@@ -109,16 +108,16 @@ function entierAleatoire(min, max)
 }
 
 function jeu(){
-    
-    
-    
+    // if(fruit!=undefined||fruit!=null)
+    //     effacer(fruit);
+    dessinerSnake();
+   
+    deplacer(direction);
+    setTimeout(jeu,1000);
 }
  console.log(plateau.style.background);
 
-(()=>{
-    effacer(fruit);
-    effacerSnake();
-    dessinerSnake();
+(()=>{ 
     fruit = dessinerfruit();
     jeu();
 })();
