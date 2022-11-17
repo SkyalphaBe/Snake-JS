@@ -1,0 +1,21 @@
+A faire :
+-agrandicement corp(si fruit mangé)
+-deplacement corp
+-calcule point
+-menu principale (même vue)
+-design du jeux
+-design serpent(image tête corp)
+-difficulté du niveau
+-commenter le code
+
+Facultatif :
+-mode multi(ZQSD) sur la même machine
+-image queue serpent
+-ajout de background enb fonction de la difficulté
+-ajout de son
+
+Fait :
+-postition aléatoire fruit
+-deplacement auto de la tête
+-changement de direction avec clavier(fleche directionnelle)
+-dessin fruit, serpent
