@@ -1,18 +1,38 @@
 const plateau = document.getElementById("snakeGame");
 const context = snakeGame.getContext("2d");
 
+const canvaHeight = plateau.height;
+const canvaWidth = plateau.width;
+const tailleBlock = canvaHeight/5;
+
+var monde =[
+    [[0,0],[0,1],[0,2],[0,3],[0,4],[0,5]],
+    [[1,0],[1,1],[1,2],[1,3],[1,4],[1,5]],
+    [[2,0],[2,1],[2,2],[2,3],[2,4],[2,5]],
+    [[3,0],[3,1],[3,2],[3,3],[3,4],[3,5]],
+    [[4,0],[4,1],[4,2],[4,3],[4,4],[4,5]],
+    [[5,0],[5,1],[5,2],[5,3],[5,4],[5,5]],
+];
+
 //liste correspondant au corps du snake
-var snake = [ 
-    {x:100, y:100} 
+var snake = [
+    [0,2]
 ]
 var direction = 'haut';
 var fruit;
+
+function dessinerMonde(){
+    context.fillStyle = 'green';
+    monde.forEach(cellule=>{
+        context.fillRect(cellule[0]*tailleBlock,cellule[1]*tailleBlock, tailleBlock, tailleBlock);
+    });
+}
 
 //fonction permettant le dessin d'une partie du corps
 function dessinerCorps(corps){
     context.fillStyle = 'blue';
     //context.strokestyle = 'darkblue';
-    context.fillRect(corps.x, corps.y, 5, 5);
+    context.fillRect(corps[0]*tailleBlock, corps[1]*tailleBlock, tailleBlock, tailleBlock);
     //context.strokeRect(corps.x, corps.y, 5, 5);
 }
 
@@ -107,17 +127,25 @@ function entierAleatoire(min, max)
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function jeu(){
+function fruitManger(){
+    if(snake[0].x+5 >= fruit.x && snake[0].y+5 >= fruit.y && snake[0].y+5 <= fruit.y+5 && snake[0].x+5 <= fruit.x+5){
+        effacer(fruit);
+        fruit = dessinerfruit();
+    }
+}
+
+function step(){
     // if(fruit!=undefined||fruit!=null)
     //     effacer(fruit);
     dessinerSnake();
    
     deplacer(direction);
-    setTimeout(jeu,1000);
+    fruitManger();
+
+    setTimeout(step,10);
 }
- console.log(plateau.style.background);
 
 (()=>{ 
     fruit = dessinerfruit();
-    jeu();
+    step();
 })();

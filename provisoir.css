@@ -5,8 +5,7 @@ body{
 }
 
 canvas{
-    height: 80%;
-    width: 80%;
-    background-color: green;
+    height: 50em;
+    width: 50em;
+    /*background-color: green;*/
 }
-
