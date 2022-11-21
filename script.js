@@ -21,7 +21,7 @@ const largeurBlock = canvaHeight/monde.length;
 
 
 function dessinerMonde(){
-    context.fillStyle = 'green';
+    context.fillStyle ='#81F4E1';
     monde.forEach(ligne=>{
         ligne.forEach(cellule=>{
              context.fillRect(cellule[0]*longueurBlock,cellule[1]*largeurBlock, longueurBlock, largeurBlock);
@@ -55,7 +55,7 @@ document.addEventListener('keydown',(evt)=>{
 
 //fonction pour effacer un élément sur le plateau
 function effacer(position){
-    context.fillStyle = 'green';
+    context.fillStyle = '#81F4E1';
     context.fillRect(position[0]*longueurBlock, position[1]*largeurBlock, longueurBlock, largeurBlock);
 }
 

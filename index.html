@@ -4,15 +4,31 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="provisoir.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/provisoir.css">
 
     <title>Snake</title>
 </head>
 <body>
+    <div id="myModal" class="modal">
+        <div class="modal-Content">
+            <span class="close">&times;</span>
+            <h1>SNAKE!</h1>
+            <div class="radio">
+                <input class="radio__input" type="radio" value="diff1" name="myRadio" id="myRadio1">
+                <label class="radio__label" for="myRadio1">difficulé 1</label>
+                <input class="radio__input" type="radio" value="diff2" name="myRadio" id="myRadio2">
+                <label class="radio__label" for="myRadio2">difficulé 2</label>
+                <input class="radio__input" type="radio" value="diff3" name="myRadio" id="myRadio3">
+                <label class="radio__label" for="myRadio3">difficulé 3</label>
+            </div>
+            <p>Some text in the Modal..</p>
+        </div>
+    </div>
     <section class="content">
-        <H1>SNAKE JS</H1>
         <canvas id="snakeGame"></canvas>
         <script src="script.js"></script>
+        <script src="script/modal.js"></script>
     </section>
 </body>
 </html>
