@@ -1,5 +1,13 @@
 const plateau = document.getElementById("snakeGame");
 const context = snakeGame.getContext("2d");
+const btnStart = document.getElementById("startBtn");
+const ModalGameOver = document.getElementsByClassName("GAMEOVER")[0];
+const goBack = document.getElementById("backMenu");
+const menu = document.getElementById("myModal");
+
+var fruit;
+var snake;
+var time;
 
 var monde =[
     [[0,0],[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7],[0,8],[0,9]],
@@ -21,7 +29,7 @@ const largeurBlock = canvaHeight/monde.length;
 
 
 function dessinerMonde(){
-    context.fillStyle ='#81F4E1';
+    context.fillStyle ='#DDD5D0';
     monde.forEach(ligne=>{
         ligne.forEach(cellule=>{
              context.fillRect(cellule[0]*longueurBlock,cellule[1]*largeurBlock, longueurBlock, largeurBlock);
@@ -55,7 +63,7 @@ document.addEventListener('keydown',(evt)=>{
 
 //fonction pour effacer un élément sur le plateau
 function effacer(position){
-    context.fillStyle = '#81F4E1';
+    context.fillStyle = '#DDD5D0';
     context.fillRect(position[0]*longueurBlock, position[1]*largeurBlock, longueurBlock, largeurBlock);
 }
 
@@ -68,8 +76,9 @@ function entierAleatoire(min, max)
 //classe correspondant au snake
 class Snake {
     constructor() {
-        this.direction = 'droite';
-        this.corps = [[4,4],[4,5],[4,6]];
+        this.direction = 'haut';
+        this.corps = [[4,4],[4,5]];
+        this.score=0;
     }
     //fonction pour dessiner le serpent
     dessinerSnake(){
@@ -77,11 +86,11 @@ class Snake {
     }
     deplacerCorps(){
         let tail;
-        tail = this.corps.pop();
+        tail = [];
         switch(this.direction){
             case 'haut':
                 tail[1] = this.corps[0][1]-1;
-                tail[0] = this.corps[0][0];
+                tail[0] = this.corps[0][0]; 
                 break;
             case 'bas':
                 tail[1] = this.corps[0][1]+1;
@@ -96,7 +105,15 @@ class Snake {
                 tail[1] = this.corps[0][1];
                 break;
         }
+
         this.corps.unshift(tail);
+        if(!this.fruitManger()){
+            this.corps.pop();
+        }
+        else{
+            this.score++;
+            console.log(this.score);
+        }
         this.dessinerSnake();
     }
 
@@ -105,9 +122,13 @@ class Snake {
         this.corps.forEach(element=>effacer(element));
     }
     fruitManger(){
-        if(this.corps[0].join()===fruit.position.join())
+        if(this.corps[0].join()===fruit.position.join()){
             return true;
+        }
         return false;
+    }
+    gameOver(){    
+        clearTimeout(time);
     }
 }
 
@@ -120,9 +141,8 @@ class Fruit {
     
     dessinerFruit(){
         context.fillStyle = 'red';
-
         let abscisse = entierAleatoire(0,9);
-        let ordonnee = entierAleatoire(0,9);
+        let ordonnee = entierAleatoire(0,9); 
         context.fillRect(abscisse*longueurBlock, ordonnee*largeurBlock, longueurBlock, largeurBlock);
         this.position = [abscisse,ordonnee];
     }
@@ -133,17 +153,27 @@ function step(){
         effacer(fruit.position);
         fruit.dessinerFruit();
     }
-    snake.effacerCorps();
-    snake.deplacerCorps();
-    setTimeout(step,500);
+    if(snake.corps[0][0]==-1 || snake.corps[0][0]==monde.length || snake.corps[0][1]==-1 || snake.corps[0][1]==monde.length){
+        ModalGameOver.style.display="block";
+        snake.gameOver();
+    }
+    else{
+        snake.effacerCorps();
+        snake.deplacerCorps();
+        time = setTimeout(step,500);
+    }
 }
 
-var fruit;
-var snake;
-
-(()=>{ 
+btnStart.addEventListener("click",()=>{
+    console.log("ss");
     snake = new Snake();
     fruit = new Fruit();
     dessinerMonde();
     step();
-})();
+});
+
+/* goBack.addEventListener("click",()=>{
+    ModalGameOver.style.display="none";
+    menu.style.display="block";
+
+}); */

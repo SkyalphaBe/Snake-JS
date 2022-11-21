@@ -3,23 +3,51 @@
     position: fixed;
     z-index: 1;
     width: 40vw;
-    height: 60vh;
+    height: 65vh;
     overflow: auto;
-    background-color: #FFFFFF;
+    background-color: #57996d;
     border-radius: 15px;
+}
+
+.modal h1{
+    font-size: 3em;
 }
 
 .modal-Content{
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
     padding: 20px;
+    color: #FFFFFF;
 
 }
 
 .modal-Content h1{
     font-weight: bold;
+}
+
+.START{
+    padding: 2% 5% 2% 5%;
+    border-radius: 15px;
+    border: 0;
+    font-size: 1em;
+    color: #FFFFFF;
+    background-color: #4e5550;
+    transition: 0.3s;
+
+}
+
+.START:hover{
+    background-color: #824444;
+}
+
+.MidBox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 .close{
     color: brown;
@@ -40,17 +68,42 @@
 .radio__label{
     padding: 8px 14px;
     font-family: sans-serif;
-    font-size: 14px;
+    font-size: 2em;
     color: #FFFFFF;
-    background:#56CBF9;
+    background:#4e5550;
     cursor: pointer;
     transition: background 0.3s;
 }
 
 .radio__label:not(:last-of-type){
-    border-right: 1px solid #439bbd;
+    border-right: 1px solid #4e5550;
 }
 
 .radio__input:checked+.radio__label{
-    background:#439bbd;
+    background:#824444;
+}
+
+.radio__label:hover{
+    background-color: #824444;
+}
+
+
+/* game over part */
+
+.GAMEOVER{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    width: 40vw;
+    height: 65vh;
+    overflow: auto;
+    background-color: #57996d;
+    border-radius: 15px;
+}
+
+.GAMEOVER-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

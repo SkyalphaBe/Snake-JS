@@ -1,8 +1,9 @@
 A faire :
 -patern Singleton (une seule instance pour chaque classe, en particulié, le fruit)
--agrandicement corp(si fruit mangé)
--deplacement corp
--calcule point
+
+-fichier json
+-sidebarre avec info de la game 
+-position du fruit a ne pas mettre sur la tete
 -menu principale (même vue)
 -design du jeux
 -design serpent(image tête corp)
@@ -16,8 +17,11 @@ Facultatif :
 -ajout de son
 
 Fait :
+-calcule point
+-agrandicement corp(si fruit mangé)
 -postition aléatoire fruit
 -deplacement auto de la tête
 -changement de direction avec clavier(fleche directionnelle)
 -dessin fruit, serpent
 -classe Snake et Fruit
+-deplacement corp
