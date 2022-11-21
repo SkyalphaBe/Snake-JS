@@ -68,75 +68,44 @@ function entierAleatoire(min, max)
 //classe correspondant au snake
 class Snake {
     constructor() {
-        this.tete = [1,5];
         this.direction = 'droite';
-        this.corps = [{position : [0,5],direction : "droite"}];
-        //chaque partie de corps : {position : [],direction : ""}
+        this.corps = [[4,4],[4,5],[4,6]];
     }
     //fonction pour dessiner le serpent
     dessinerSnake(){
-        dessinerCorps(this.tete);
-        this.corps.forEach(element=>dessinerCorps(element.position));
+        this.corps.forEach(element=>dessinerCorps(element));
     }
-    deplacerTete(){
-        this.effacerTete();
-        this.LastPosition = snake.tete;
-        this.lastDirection = this.direction;
+    deplacerCorps(){
+        let tail;
+        tail = this.corps.pop();
         switch(this.direction){
             case 'haut':
-                this.tete[1]-=1;
+                tail[1] = this.corps[0][1]-1;
+                tail[0] = this.corps[0][0];
                 break;
             case 'bas':
-                this.tete[1]+=1;
+                tail[1] = this.corps[0][1]+1;
+                tail[0] = this.corps[0][0];
                 break;
             case 'gauche':
-                this.tete[0]-=1;
+                tail[0] = this.corps[0][0]-1;
+                tail[1] = this.corps[0][1];
                 break;
             case 'droite':
-                this.tete[0]+=1;
+                tail[0] = this.corps[0][0]+1;
+                tail[1] = this.corps[0][1];
                 break;
         }
+        this.corps.unshift(tail);
         this.dessinerSnake();
     }
 
-    grandicement(){
-        if(this.fruitManger()){
-            this.corps.push({position:[this.LastPosition[0],this.LastPosition[1]],direction:this.lastDirection});
-        }
-    }
-
-    deplacerCorps(){
-        this.corps.forEach(element =>{
-            if(element.position.join()===this.LastPosition.join()){
-                element.direction=this.direction;
-                this.effacerCorps();
-            }
-            console.log(element.direction);
-            switch(element.direction){
-                case 'haut':
-                    element.position[1]-=1;
-                    break;
-                case 'bas':
-                    element.position[1]+=1;
-                    break;
-                case 'gauche':
-                    element.position[0]-=1;
-                    break;
-                case 'droite':
-                    element.position[0]+=1;
-                    break;
-            }
-        });
-    }
     //fonction pour effacer le snake lors d'une nouvelle partie
-   effacerTete(){
-        effacer(this.tete);
-    }
     effacerCorps(){
-        this.corps.forEach(element=>effacer(element.position));
+        this.corps.forEach(element=>effacer(element));
     }
     fruitManger(){
-        if(this.tete.join()===fruit.position.join())
+        if(this.corps[0].join()===fruit.position.join())
             return true;
         return false;
     }
@@ -151,6 +120,7 @@ class Fruit {
     
     dessinerFruit(){
         context.fillStyle = 'red';
+
         let abscisse = entierAleatoire(0,9);
         let ordonnee = entierAleatoire(0,9);
         context.fillRect(abscisse*longueurBlock, ordonnee*largeurBlock, longueurBlock, largeurBlock);
@@ -163,10 +133,8 @@ function step(){
         effacer(fruit.position);
         fruit.dessinerFruit();
     }
-    
-    snake.deplacerTete();
-    // snake.deplacerCorps();
-    snake.grandicement();
+    snake.effacerCorps();
+    snake.deplacerCorps();
     setTimeout(step,500);
 }
 
