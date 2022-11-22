@@ -4,8 +4,8 @@ const btnStart = document.getElementById("startBtn");
 const ModalGameOver = document.getElementsByClassName("GAMEOVER")[0];
 const menu = document.getElementById("myModal");
 const apple = document.getElementById('apple');
-
-console.log(apple);
+const score = document.getElementById("foot").children.item(0);
+const nbFruit = document.getElementById("fruit").children.item(1);
 
 var fruit;
 var snake;
@@ -116,6 +116,8 @@ class Snake {
         }
         else{
             this.score++;
+            score.innerHTML="score : "+this.score*100;
+            nbFruit.innerHTML=this.score;
             console.log(this.score);
         }
         this.dessinerSnake();

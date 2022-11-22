@@ -19,6 +19,7 @@
 .modal-Content{
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-direction: column;
     font-family: Arial, Helvetica, sans-serif;
     padding: 20px;
@@ -128,7 +129,6 @@
     font-weight: bolder;
     z-index: 1;
     width: 20vw;
-    height: 20vh;
     overflow: auto;
     background-color: #a82323;
     border-radius: 15px;
@@ -140,4 +140,8 @@
     justify-content: center;
     align-items: center;
     color: #FFFFFF;
+}
+
+.GAMEOVER-content button{
+    margin: 5%;
 }
