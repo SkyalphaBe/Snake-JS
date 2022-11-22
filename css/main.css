@@ -49,6 +49,10 @@ canvas{
     border-radius: 10px;
 }
 
+img{
+    display: none;
+}
+
 .content{
     display: flex;
     justify-content: center;

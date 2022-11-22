@@ -3,6 +3,9 @@ const context = snakeGame.getContext("2d");
 const btnStart = document.getElementById("startBtn");
 const ModalGameOver = document.getElementsByClassName("GAMEOVER")[0];
 const menu = document.getElementById("myModal");
+const apple = document.getElementById('apple');
+
+console.log(apple);
 
 var fruit;
 var snake;
@@ -60,10 +63,12 @@ document.addEventListener('keydown',(evt)=>{
     }
 });
 
+
+
 //fonction pour effacer un élément sur le plateau
 function effacer(position){
     context.fillStyle = '#DDD5D0';
-    context.fillRect(position[0]*longueurBlock, position[1]*largeurBlock, longueurBlock, largeurBlock);
+    context.fillRect(position[0]*longueurBlock, position[1]*largeurBlock, longueurBlock+5, largeurBlock+5);
 }
 
 //fonction pour obtenir un nombre aléatoire
@@ -139,10 +144,9 @@ class Fruit {
     }
     
     dessinerFruit(){
-        context.fillStyle = 'red';
         let abscisse = entierAleatoire(0,9);
         let ordonnee = entierAleatoire(0,9); 
-        context.fillRect(abscisse*longueurBlock, ordonnee*largeurBlock, longueurBlock, largeurBlock);
+        context.drawImage(apple,abscisse*longueurBlock, ordonnee*largeurBlock, longueurBlock, largeurBlock);
         this.position = [abscisse,ordonnee];
     }
 };
@@ -165,10 +169,8 @@ function step(){
 }
 
 btnStart.addEventListener("click",()=>{
-    console.log("ss");
     snake = new Snake();
     fruit = new Fruit();
     dessinerMonde();
     step();
 });
-

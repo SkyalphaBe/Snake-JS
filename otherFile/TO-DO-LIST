@@ -2,7 +2,7 @@ A faire :
 -patern Singleton (une seule instance pour chaque classe, en particulié, le fruit)
 
 -fichier json
--sidebarre avec info de la game 
+-footer avec info de la game 
 -position du fruit a ne pas mettre sur la tete
 -menu principale (même vue)
 -design du jeux
@@ -17,6 +17,7 @@ Facultatif :
 -ajout de son
 
 Fait :
+-header
 -calcule point
 -agrandicement corp(si fruit mangé)
 -postition aléatoire fruit
