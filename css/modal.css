@@ -15,7 +15,6 @@
 
 .modal-Content{
     display: flex;
-    justify-content: space-around;
     align-items: center;
     flex-direction: column;
     font-family: Arial, Helvetica, sans-serif;
@@ -28,7 +27,7 @@
     font-weight: bold;
 }
 
-.START{
+.btn{
     padding: 2% 5% 2% 5%;
     border-radius: 15px;
     border: 0;
@@ -93,11 +92,13 @@
 .GAMEOVER{
     display: none;
     position: fixed;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bolder;
     z-index: 1;
-    width: 40vw;
-    height: 65vh;
+    width: 20vw;
+    height: 20vh;
     overflow: auto;
-    background-color: #57996d;
+    background-color: #a82323;
     border-radius: 15px;
 }
 
@@ -106,4 +107,5 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    color: #FFFFFF;
 }

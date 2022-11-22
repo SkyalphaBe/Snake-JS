@@ -10,13 +10,18 @@
     <title>Snake</title>
 </head>
 <body>
-    <section class="side-barre" id="head">
+    <section class="header" id="head">
         <h1>SNAKE!</h1>
     </section>
-    <section id="gameOver" class="GAMEOVER">
-        <div class="GAMEOVER-content">
-            <H1>GAME OVER</H1>
-            <button class="backMenu">MENU</button>
+    <section class="game">
+        <div id="gameOver" class="GAMEOVER">
+            <div class="GAMEOVER-content">
+                <H1>GAME OVER</H1>
+                <button class="btn" id="menuBtn">MENU</button>
+            </div>
+        </div>
+        <div class="content" id="game">
+            <canvas id="snakeGame"></canvas>
         </div>
     </section>
     <section id="myModal" class="modal">
@@ -36,13 +41,13 @@
             <section class="snake-color">
                 
             </section>
-            <button class="START" id="startBtn">START</button>
+            <button class="btn" id="startBtn">START</button>
         </div>
     </section>
-    <section class="content" id="game">
-        <canvas id="snakeGame"></canvas>
-        <script src="script/game.js"></script>
-        <script src="script/modal.js"></script>
+    <section class="footer" id="foot">
+        <h2>score : </h2>
     </section>
+    <script src="script/game.js"></script>
+    <script src="script/modal.js"></script>
 </body>
 </html>

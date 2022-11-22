@@ -2,7 +2,6 @@ const plateau = document.getElementById("snakeGame");
 const context = snakeGame.getContext("2d");
 const btnStart = document.getElementById("startBtn");
 const ModalGameOver = document.getElementsByClassName("GAMEOVER")[0];
-const goBack = document.getElementById("backMenu");
 const menu = document.getElementById("myModal");
 
 var fruit;
@@ -155,6 +154,7 @@ function step(){
     }
     if(snake.corps[0][0]==-1 || snake.corps[0][0]==monde.length || snake.corps[0][1]==-1 || snake.corps[0][1]==monde.length){
         ModalGameOver.style.display="block";
+        
         snake.gameOver();
     }
     else{
@@ -172,8 +172,3 @@ btnStart.addEventListener("click",()=>{
     step();
 });
 
-/* goBack.addEventListener("click",()=>{
-    ModalGameOver.style.display="none";
-    menu.style.display="block";
-
-}); */
