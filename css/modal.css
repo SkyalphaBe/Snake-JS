@@ -1,0 +1,147 @@
+.modal{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    width: 35vw;
+    overflow: auto;
+    background-color: #57996d;
+    border-radius: 15px;
+}
+
+.modal h1{
+    font-size: 3em;
+    background-color: #824444;
+    padding: 1% 2% 1% 2%;
+    margin: 5% 1% 5% 1%;
+    border-radius: 15px;
+}
+
+.modal-Content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 20px;
+    color: #FFFFFF;
+
+}
+
+.modal-Content h1{
+    font-weight: bold;
+}
+
+.btn{
+    padding: 2% 5% 2% 5%;
+    border-radius: 15px;
+    border: 0;
+    font-size: 1em;
+    color: #FFFFFF;
+    background-color: #6c706d;
+    transition: 0.3s;
+    margin-top: 5%;
+
+}
+
+.btn:hover{
+    background-color: #824444;
+}
+
+.MidBox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.close{
+    color: brown;
+    float: right;
+
+}
+.radio{
+    display: inline-flex;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+}
+
+.radio__input{
+    display: none;
+
+}
+.radio__label{
+    padding: 8px 14px;
+    font-family: sans-serif;
+    font-size: 1.5em;
+    color: #FFFFFF;
+    background:#6c706d;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.radio__label:not(:last-of-type){
+    border-right: 1px solid #4e5550;
+}
+
+.radio__input:checked+.radio__label{
+    background:#824444;
+}
+
+.radio__label:hover{
+    background-color: #824444;
+}
+.taille{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.taille-option{
+    display: flex;
+    justify-content: space-between;
+    width: 20vw;
+}
+
+#slider{
+    -webkit-appearance: none;
+    outline: none;
+    border-radius: 15px;
+    padding: 1%;
+    width: 20vw;
+}
+
+#slider::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    background-color: #6c706d;;
+    border-radius: 100%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    z-index: 3;
+}
+
+/* game over part */
+
+.GAMEOVER{
+    display: none;
+    position: fixed;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bolder;
+    z-index: 1;
+    width: 20vw;
+    overflow: auto;
+    background-color: #a82323;
+    border-radius: 15px;
+}
+
+.GAMEOVER-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #FFFFFF;
+}
+
+.GAMEOVER-content button{
+    margin: 5%;
+}
