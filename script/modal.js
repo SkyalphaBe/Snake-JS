@@ -7,8 +7,6 @@ const header = document.getElementById("head");
 const footer = document.getElementById("foot");
 const goBack = document.getElementById("menuBtn");
 
-console.log(content);
-
 window.onload = function(){
     modal.style.display="block";
 }
@@ -31,6 +29,4 @@ goBack.onclick = function(){
     ModalGameOver.style.display="none";
     header.style.display="none";
     footer.style.display="none";
-
-    
 };
