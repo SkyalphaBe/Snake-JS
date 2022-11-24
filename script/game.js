@@ -49,16 +49,24 @@ function dessinerCorps(position){
 document.addEventListener('keydown',(evt)=>{
     switch(evt.key){
         case 'ArrowUp':
-            snake.direction='haut';
+            if(snake.direction!='bas'){
+                snake.direction='haut';
+            }
             break;
         case 'ArrowDown':
-            snake.direction='bas';
+            if(snake.direction!='haut'){
+                snake.direction='bas';
+            }
             break;
         case 'ArrowLeft':
-            snake.direction='gauche';
+            if(snake.direction!='droite'){
+                snake.direction='gauche';
+            }
             break;
         case 'ArrowRight':
-            snake.direction='droite';
+            if(snake.direction!='gauche'){
+                snake.direction='droite';
+            }
             break;
     }
 });
@@ -89,28 +97,28 @@ class Snake {
         this.corps.forEach(element=>dessinerCorps(element));
     }
     deplacerCorps(){
-        let tail;
-        tail = [];
+        let head;
+        head = [];
         switch(this.direction){
             case 'haut':
-                tail[1] = this.corps[0][1]-1;
-                tail[0] = this.corps[0][0]; 
+                head[1] = this.corps[0][1]-1;
+                head[0] = this.corps[0][0]; 
                 break;
             case 'bas':
-                tail[1] = this.corps[0][1]+1;
-                tail[0] = this.corps[0][0];
+                head[1] = this.corps[0][1]+1;
+                head[0] = this.corps[0][0];
                 break;
             case 'gauche':
-                tail[0] = this.corps[0][0]-1;
-                tail[1] = this.corps[0][1];
+                head[0] = this.corps[0][0]-1;
+                head[1] = this.corps[0][1];
                 break;
             case 'droite':
-                tail[0] = this.corps[0][0]+1;
-                tail[1] = this.corps[0][1];
+                head[0] = this.corps[0][0]+1;
+                head[1] = this.corps[0][1];
                 break;
         }
 
-        this.corps.unshift(tail);
+        this.corps.unshift(head);
         if(!this.fruitManger()){
             this.corps.pop();
         }
