@@ -1,11 +1,10 @@
 A faire :
 -patern Singleton (une seule instance pour chaque classe, en particulié, le fruit)
 -fichier json
--position du fruit a ne pas mettre sur la tete
 -menu principale (même vue)
 -design du jeux
 -design serpent(image tête corp)
--difficulté du niveau
+-taille du terrain
 -commenter le code
 
 Facultatif :
@@ -25,3 +24,6 @@ Fait :
 -dessin fruit, serpent
 -classe Snake et Fruit
 -deplacement corp
+-position du fruit a ne pas mettre sur la tete
+-difficulté du niveau
+-game over

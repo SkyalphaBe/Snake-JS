@@ -178,7 +178,9 @@ class Snake {
         }
         return false;
     }
-    gameOver(){    
+    gameOver(){   
+        createGameOver(); 
+        snake = null;
         clearTimeout(time);
     }
 }
@@ -215,8 +217,11 @@ function step(){
         effacer(fruit.position);
         fruit.dessinerFruit();
     }
+    for(let i = 1; i<snake.corps.length;i++){
+        if(snake.corps[0].join()===snake.corps[i].join())
+            snake.gameOver();
+    }
     if(snake.corps[0][0]==-1 || snake.corps[0][0]==monde.length || snake.corps[0][1]==-1 || snake.corps[0][1]==monde.length){
-        createGameOver();
         snake.gameOver();
     }
     else{
