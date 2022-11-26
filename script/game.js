@@ -1,16 +1,55 @@
-const plateau = document.getElementById("snakeGame");
-const context = snakeGame.getContext("2d");
 const btnStart = document.getElementById("startBtn");
 const ModalGameOver = document.getElementsByClassName("GAMEOVER")[0];
 const menu = document.getElementById("myModal");
-const apple = document.getElementById('apple');
-const score = document.getElementById("foot").children.item(0);
-const nbFruit = document.getElementById("fruit").children.item(1);
 const vitesse = document.querySelectorAll("input[type=radio]");
+const head = document.getElementById("head");
+const appleCanva = document.getElementById("appleCanva");
+const goBack = document.getElementById("menuBtn");
+
+var context;
+var longueurBlock;
+var largeurBlock;
+var score;
+var nbFruit;
+var apple;
+/* var cloneMenu = menu.cloneNode(true); */
+
+
+btnStart.addEventListener("click",startGame);
+/* cloneMenu.querySelector("button").addEventListener("click",startGame); */
+
+function startGame(){
+    createHeadFoot();
+    createCanvas();
+    menu.style.display="none";
+    /* cloneMenu.remove(); */
+
+    var plateau = document.getElementById("snakeGame");
+    context = snakeGame.getContext("2d");
+
+    var canvaHeight = plateau.height;
+    var canvaWidth = plateau.width;
+
+    longueurBlock = canvaWidth/monde.length;
+    largeurBlock = canvaHeight/monde.length;
+
+    score = document.getElementById("foot").children.item(0);
+    nbFruit = document.getElementById("fruit").children.item(1);
+    apple = document.getElementById('apple');
+
+    snake = new Snake();
+    fruit = new Fruit();
+    dessinerMonde();
+    if(isCheck(vitesse) != null){
+        step();
+    }
+}
 
 var fruit;
 var snake;
 var time;
+
+
 
 
 var monde = [
@@ -26,10 +65,7 @@ var monde = [
     [[9,0],[9,1],[9,2],[9,3],[9,4],[9,5],[9,6],[9,7],[9,8],[9,9]],
 ];
 
-const canvaHeight = plateau.height;
-const canvaWidth = plateau.width;
-const longueurBlock = canvaWidth/monde.length;
-const largeurBlock = canvaHeight/monde.length;
+
 
 
 function dessinerMonde(){
@@ -128,7 +164,6 @@ class Snake {
             this.score++;
             score.innerHTML="score : "+this.score*100;
             nbFruit.innerHTML=this.score;
-            console.log(this.score);
         }
         this.dessinerSnake();
     }
@@ -158,7 +193,7 @@ class Fruit {
     dessinerFruit(){
         let abscisse = entierAleatoire(0,9);
         let ordonnee = entierAleatoire(0,9); 
-        context.drawImage(apple,abscisse*longueurBlock, ordonnee*largeurBlock, longueurBlock, largeurBlock);
+        context.drawImage(appleCanva,abscisse*longueurBlock, ordonnee*largeurBlock, longueurBlock, largeurBlock);
         this.position = [abscisse,ordonnee];
     }
 };
@@ -177,8 +212,7 @@ function step(){
         fruit.dessinerFruit();
     }
     if(snake.corps[0][0]==-1 || snake.corps[0][0]==monde.length || snake.corps[0][1]==-1 || snake.corps[0][1]==monde.length){
-        ModalGameOver.style.display="block";
-        
+        createGameOver();
         snake.gameOver();
     }
     else{
@@ -188,14 +222,96 @@ function step(){
     }
 }
 
-btnStart.addEventListener("click",()=>{
-    snake = new Snake();
-    fruit = new Fruit();
-    dessinerMonde();
-    if(isCheck(vitesse) != null){
-        step();
-    }
-    else{
-        console.log("cc")
-    }
-});
+function createCanvas(){
+    let newC = document.createElement("canvas");
+    newC.id="snakeGame";
+    document.getElementsByTagName("body")[0].insertBefore(newC,menu);
+}
+
+function createGameOver(){
+    var newGO = document.createElement("div");
+    let newGOcontent = document.createElement("div")
+    let newH1 = document.createElement("h1");
+    let newBtn = document.createElement("button");
+
+    newGO.id="gameOver";
+    newGO.className="GAMEOVER";
+
+    newGOcontent.className="GAMEOVER-content"
+
+    newH1.textContent="GAME OVER";
+
+    newBtn.id="menuBtn";
+    newBtn.className="btn";
+    newBtn.textContent="MENU"
+
+    newGO.appendChild(newGOcontent);
+    newGOcontent.appendChild(newH1);
+    newGOcontent.appendChild(newBtn);
+    
+    newGO.querySelector(".btn").addEventListener("click",()=>{
+        newGO.remove();
+        deleteHeadFoot();
+        deleteCanvas();
+        menu.style.display="block";
+        /* createMenu(cloneMenu); */
+
+    });
+
+    document.getElementsByTagName("body")[0].insertBefore(newGO,document.querySelector("script"));
+}
+
+
+function createHeadFoot(){
+    let newHead = document.createElement("section");
+    let newTitle = document.createElement("h1");
+    let newFoot = document.createElement("section");
+    let newScore = document.createElement("h2");
+    let newFruit = document.createElement("div");
+    let newImg = document.createElement("img");
+    let newFruitManger = document.createElement("h2");
+
+    newHead.id="head";
+    newHead.className="header";
+
+    newTitle.textContent="SNAKE!";
+
+    newHead.appendChild(newTitle);
+
+    newFoot.id="foot";
+    newFoot.className="footer";
+
+    newScore.textContent="Score : 0";
+
+    newFruit.id="fruit";
+    newFruit.className="nbFruit";
+
+    newImg.id="apple";
+    newImg.src="./Image/apple.png";
+    newImg.alt="apple";
+
+    newFruitManger.textContent=" 0";
+
+    newFoot.appendChild(newScore);
+    newFoot.appendChild(newFruit);
+    newFruit.appendChild(newImg);
+    newFruit.appendChild(newFruitManger);
+
+    document.getElementsByTagName("body")[0].insertBefore(newHead,menu);
+    document.getElementsByTagName("body")[0].insertBefore(newFoot,document.querySelector("script"));
+
+    return [newHead,newFoot];
+}
+
+/* function createMenu(clone){
+    document.querySelector("body").insertBefore(clone,menu);
+} */
+
+function deleteHeadFoot(){
+    document.querySelector(".header").remove();
+    document.querySelector(".footer").remove();
+}
+
+function deleteCanvas(){
+    document.querySelector("canvas").remove();
+}
