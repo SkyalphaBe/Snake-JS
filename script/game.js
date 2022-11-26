@@ -192,7 +192,11 @@ class Fruit {
     
     dessinerFruit(){
         let abscisse = entierAleatoire(0,9);
-        let ordonnee = entierAleatoire(0,9); 
+        let ordonnee = entierAleatoire(0,9);
+        while(snake.corps.join().includes([abscisse,ordonnee].join())){
+            abscisse = entierAleatoire(0,9);
+            ordonnee = entierAleatoire(0,9);
+        } 
         context.drawImage(appleCanva,abscisse*longueurBlock, ordonnee*largeurBlock, longueurBlock, largeurBlock);
         this.position = [abscisse,ordonnee];
     }
