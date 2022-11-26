@@ -2,6 +2,7 @@ const btnStart = document.getElementById("startBtn");
 const ModalGameOver = document.getElementsByClassName("GAMEOVER")[0];
 const menu = document.getElementById("myModal");
 const vitesse = document.querySelectorAll("input[type=radio]");
+const taillePlateau = document.querySelector("input[type=range]").value;
 const head = document.getElementById("head");
 const appleCanva = document.getElementById("appleCanva");
 const goBack = document.getElementById("menuBtn");
