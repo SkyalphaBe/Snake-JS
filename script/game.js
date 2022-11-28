@@ -6,6 +6,7 @@ const taillePlateau = document.querySelector("input[type=range]").value;
 const head = document.getElementById("head");
 const appleCanva = document.getElementById("appleCanva");
 const goBack = document.getElementById("menuBtn");
+const audio = document.getElementById("eatFruit");
 
 var context;
 var longueurBlock;
@@ -35,7 +36,7 @@ function startGame(){
     nbFruit = document.getElementById("fruit").children.item(1);
     apple = document.getElementById('apple');
 
-    snake = new Snake([[4,4],[4,5]]);
+    snake = new Snake([[7,4],[7,5]]);
     fruit = new Fruit();
     if(isCheck(vitesse) != null){
         step();
@@ -160,6 +161,7 @@ class Snake {
         else{
             this.score++;
             score.innerHTML="score : "+this.score*100;
+            audio.play();
             nbFruit.innerHTML=this.score;
         }
         console.log(this.corps);
@@ -217,7 +219,7 @@ function gameOver(){
             return true;
         }
     }
-    if(snake.corps[0][0]-1==-1 || snake.corps[0][0]+1==monde.length || snake.corps[0][1]-1==-1 || snake.corps[0][1]+1==monde.length){
+    if(snake.corps[0][0]-1==-1&&snake.direction=='gauche' || snake.corps[0][0]+1==monde.length&&snake.direction=='droite' || snake.corps[0][1]-1==-1&&snake.direction=='haut' || snake.corps[0][1]+1==monde.length&&snake.direction=='bas'){
         createGameOver(); 
         snake = null;
         clearTimeout(time);
@@ -242,6 +244,8 @@ function step(){
 function createCanvas(){
     let newC = document.createElement("canvas");
     newC.id="snakeGame";
+    newC.height = "500";
+    newC.width = "500";
     document.getElementsByTagName("body")[0].insertBefore(newC,menu);
 }
 
