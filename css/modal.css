@@ -27,10 +27,6 @@
 
 }
 
-.modal-Content h1{
-    font-weight: bold;
-}
-
 .btn{
     padding: 2% 5% 2% 5%;
     border-radius: 15px;
@@ -40,7 +36,6 @@
     background-color: #6c706d;
     transition: 0.3s;
     margin-top: 5%;
-
 }
 
 .btn:hover{
@@ -53,11 +48,7 @@
     align-items: center;
     justify-content: center;
 }
-.close{
-    color: brown;
-    float: right;
 
-}
 .radio{
     display: inline-flex;
     overflow: hidden;
@@ -90,13 +81,13 @@
 .radio__label:hover{
     background-color: #824444;
 }
-.taille{
+.size{
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
-.taille-option{
+.size-option{
     display: flex;
     justify-content: space-between;
     width: 20vw;
@@ -140,6 +131,12 @@
     justify-content: center;
     align-items: center;
     color: #FFFFFF;
+}
+
+.GAMEOVER-content h1{
+    font-size: 2.5em;
+    margin: 0;
+    margin-top: 15px;
 }
 
 .GAMEOVER-content button{

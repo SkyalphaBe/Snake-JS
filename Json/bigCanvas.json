@@ -1,8 +1,8 @@
 {
-  "dimensions": [48,20],
-  "lent": 400,
-  "moyen": 250,
-  "rapide" :100,
+  "dimensions": [35,35],
+  "lent": 200,
+  "moyen": 100,
+  "rapide" :75,
   "food": [
     [3,4]
   ],

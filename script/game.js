@@ -1,21 +1,107 @@
 const btnStart = document.getElementById("startBtn");
 const menu = document.getElementById("myModal");
-const vitesse = document.querySelectorAll("input[type=radio]");
-const taillePlateau = document.querySelector("input[type=range]");
+const speed = document.querySelectorAll("input[type=radio]");
+const sizeBoard = document.querySelector("input[type=range]");
 const head = document.getElementById("head");
 const appleCanva = document.getElementById("appleCanva");
 const audio = document.getElementById("eatFruit");
 
 var context;
-var longueurBlock;
-var largeurBlock;
+var sizeBlockX;
+var sizeBlockY;
 var score;
 var nbFruit;
 var apple;
 var fruit;
 var snake;
 var time;
-var monde = [];
+var world = [];
+
+//classe correspondant au snake
+class Snake {
+    constructor(position) {
+        this.direction = 'haut';
+        this.bodySnake = position;
+        this.score=0;
+    }
+    //fonction pour dessiner le serpent
+    positionBody(position){
+        world[position[0]][position[1]]='SNAKE';
+    }
+    positionSnake(){
+        this.bodySnake.forEach(element=>this.positionBody(element));
+    }
+    moveBody(){
+        let head;
+        head = [];
+        switch(this.direction){
+            case 'haut':
+                head[1] = this.bodySnake[0][1]-1;
+                head[0] = this.bodySnake[0][0];
+                break;
+            case 'bas':
+                head[1] = this.bodySnake[0][1]+1;
+                head[0] = this.bodySnake[0][0];
+                break;
+            case 'gauche':
+                head[0] = this.bodySnake[0][0]-1;
+                head[1] = this.bodySnake[0][1];
+                break;
+            case 'droite':
+                head[0] = this.bodySnake[0][0]+1;
+                head[1] = this.bodySnake[0][1];
+                break;
+        }
+
+        this.bodySnake.unshift(head);
+        if(!this.eatFruit()){
+            this.bodySnake.pop();
+        }
+        else{
+            this.score++;
+            score.innerHTML="score : "+this.score*100;
+            audio.play();
+            nbFruit.innerHTML=this.score;
+        }
+        this.positionSnake();
+    }
+    //fonction pour effacer le snake lors d'une nouvelle partie
+    deleteBody(){
+        this.bodySnake.forEach(element=>deletePosition(element));
+    }
+    eatFruit(){
+        if(this.bodySnake[0].join()===fruit.position.join()){
+            return true;
+        }
+        return false;
+    }
+}
+
+//classe représentant le fruit
+class Fruit {
+
+    constructor(dimension){
+        this.position = [];
+        this.dimensionBoard = dimension;
+    }
+
+    drawFruit(){
+        let abscisse = randomInteger(0,this.dimensionBoard[0]-1);
+        let ordonnee = randomInteger(0,this.dimensionBoard[1]-1);
+        while(snake.bodySnake.join().includes([abscisse,ordonnee].join())){
+            abscisse = randomInteger(0,this.dimensionBoard[0]-1);
+            ordonnee = randomInteger(0,this.dimensionBoard[1]-1);
+        }
+        if(abscisse%2==0&&ordonnee%2==0||abscisse%2!=0&&ordonnee%2!=0)
+            context.fillStyle ='#DDD5D0';
+        else
+            context.fillStyle='#B0AFAF';
+        context.fillRect(abscisse*sizeBlockX, ordonnee*sizeBlockY, sizeBlockX, sizeBlockY);
+        context.drawImage(appleCanva,abscisse*sizeBlockX, ordonnee*sizeBlockY, sizeBlockX, sizeBlockY);
+        world[abscisse][ordonnee]='FRUIT';
+        this.position = [abscisse,ordonnee];
+    }
+}
 
 function choice(size){
     if (size == 1){
@@ -26,306 +112,48 @@ function choice(size){
     }
 }
 
-btnStart.addEventListener("click",()=>{
-    function importJSon(url){
-        fetch(url)
-            .then(function(response) {
-                if (response.ok) {
-                    return response.json(); // une promesse
-                } else {
-                    throw ("Error " + response.status);
-                }
-            })
-            .then (function(data) {
-                startGame(data.dimensions,data.snakePosition);
-                if(isCheck(vitesse) == 1){
-                    step(data.lent);
-                }else if (isCheck(vitesse) == 2){
-                    step(data.moyen)
-                }
-                else if(isCheck(vitesse) == 3){
-                    step(data.rapide);
-                }
-
-
-            })
-            .catch(function (err) {
-                console.log(err);
-            });
+function drawWorld(){
+    for(let i = 0; i<world.length;i++){
+        for(let j = 0; j<world.length;j++){
+            if(world[i][j]=='SNAKE'){
+                context.fillStyle = 'blue';
+            }
+            else if(world[i][j]=='EMPTY')
+                if(i%2==0&&j%2==0||i%2!=0&&j%2!=0)
+                    context.fillStyle ='#DDD5D0';
+                else
+                    context.fillStyle='#B0AFAF';
+            if (world[i][j]!='FRUIT')
+                context.fillRect(i*sizeBlockX,j*sizeBlockY, sizeBlockX, sizeBlockY);
+        }
     }
-    importJSon(choice(taillePlateau.value));
-});
-
-
-
-function startGame(dimension,positionSnake){
-
-    réinitialiserMonde(dimension);
-    createHeadFoot();
-    createCanvas();
-    menu.style.display="none";
-
-    var plateau = document.getElementById("snakeGame");
-    context = snakeGame.getContext("2d");
-    var canvaHeight = plateau.height;
-    var canvaWidth = plateau.width;
-    
-
-    longueurBlock = canvaWidth/monde.length;
-    largeurBlock = canvaHeight/monde[1].length;
-
-    score = document.getElementById("foot").children.item(0);
-    nbFruit = document.getElementById("fruit").children.item(1);
-    apple = document.getElementById('apple');
-
-    snake = new Snake(positionSnake);
-    fruit = new Fruit(dimension);
-
 }
 
 function réinitialiserMonde(size){
-    monde=[];
+    world=[];
     for(let i = 0 ;i<size[0];i++){
         let subTab = [];
         for(let j = 0;j<size[1];j++){
             subTab.push('EMPTY');
         }
-
-        monde.push(subTab);
+        world.push(subTab);
     }
-}
-function dessinerMonde(){
-    for(let i = 0; i<monde.length;i++){
-        for(let j = 0; j<monde.length;j++){
-            if(monde[i][j]=='SNAKE'){
-                context.fillStyle = 'blue'; 
-            }  
-            else if(monde[i][j]=='EMPTY')
-                if(i%2==0&&j%2==0||i%2!=0&&j%2!=0)
-                    context.fillStyle ='#DDD5D0';
-                else
-                    context.fillStyle='#B0AFAF';
-            if (monde[i][j]!='FRUIT')
-                context.fillRect(i*longueurBlock,j*largeurBlock, longueurBlock, largeurBlock);
-        }
-    }
-}
-
-function positionnerCorps(position){
-    monde[position[0]][position[1]]='SNAKE';
-}
-
-document.addEventListener('keydown',(evt)=>{
-    switch(evt.key){
-        case 'ArrowUp':
-            if(snake.direction!='bas'){
-                snake.direction='haut';
-            }
-            break;
-        case 'ArrowDown':
-            if(snake.direction!='haut'){
-                snake.direction='bas';
-            }
-            break;
-        case 'ArrowLeft':
-            if(snake.direction!='droite'){
-                snake.direction='gauche';
-            }
-            break;
-        case 'ArrowRight':
-            if(snake.direction!='gauche'){
-                snake.direction='droite';
-            }
-            break;
-    }
-});
-
-
-
-//fonction pour effacer un élément sur le plateau
-function effacer(position){
-    if(position.join()!=[])
-        monde[position[0]][position[1]]='EMPTY';
-}
-
-//fonction pour obtenir un nombre aléatoire
-function entierAleatoire(min, max)
-{
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-//classe correspondant au snake
-class Snake {
-    constructor(position) {
-        this.direction = 'haut';
-        this.corps = position;
-        this.score=0;
-    }
-    //fonction pour dessiner le serpent
-    positionnerSnake(){
-        this.corps.forEach(element=>positionnerCorps(element));
-    }
-    deplacerCorps(){
-        let head;
-        head = [];
-        switch(this.direction){
-            case 'haut':
-                head[1] = this.corps[0][1]-1;
-                head[0] = this.corps[0][0]; 
-                break;
-            case 'bas':
-                head[1] = this.corps[0][1]+1;
-                head[0] = this.corps[0][0];
-                break;
-            case 'gauche':
-                head[0] = this.corps[0][0]-1;
-                head[1] = this.corps[0][1];
-                break;
-            case 'droite':
-                head[0] = this.corps[0][0]+1;
-                head[1] = this.corps[0][1];
-                break;
-        }
-
-        this.corps.unshift(head);
-        if(!this.fruitManger()){
-            this.corps.pop();
-        }
-        else{
-            this.score++;
-            score.innerHTML="score : "+this.score*100;
-            audio.play();
-            nbFruit.innerHTML=this.score;
-        }
-        this.positionnerSnake();
-    }
-
-    //fonction pour effacer le snake lors d'une nouvelle partie
-    effacerCorps(){
-        this.corps.forEach(element=>effacer(element));
-    }
-    fruitManger(){
-        if(this.corps[0].join()===fruit.position.join()){
-            return true;
-        }
-        return false;
-    }
-}
-
-//classe représentant le fruit
-class Fruit {
-    
-    constructor(dimension){
-        this.position = [];
-        this.dimensionsplateau = dimension;
-    }
-    
-    dessinerFruit(){
-        let abscisse = entierAleatoire(0,this.dimensionsplateau[0]-1);
-        let ordonnee = entierAleatoire(0,this.dimensionsplateau[1]-1);
-        while(snake.corps.join().includes([abscisse,ordonnee].join())){
-            abscisse = entierAleatoire(0,this.dimensionsplateau[0]-1);
-            ordonnee = entierAleatoire(0,this.dimensionsplateau[1]-1);
-        } 
-        if(abscisse%2==0&&ordonnee%2==0||abscisse%2!=0&&ordonnee%2!=0)
-            context.fillStyle ='#DDD5D0';
-        else
-            context.fillStyle='#B0AFAF';
-        context.fillRect(abscisse*longueurBlock, ordonnee*largeurBlock, longueurBlock, largeurBlock);
-        context.drawImage(appleCanva,abscisse*longueurBlock, ordonnee*largeurBlock, longueurBlock, largeurBlock);
-        monde[abscisse][ordonnee]='FRUIT';
-        this.position = [abscisse,ordonnee];
-    }
-}
-
-function isCheck(liste){
-   for(let i = 0;i<liste.length;i++){
-        if(liste[i].checked){
-            return liste[i].value;
-        }
-   }
-}
-
-function gameOver(){
-    for(let i = 1; i<snake.corps.length;i++){
-        if(snake.corps[0].join()===snake.corps[i].join()){ 
-            createGameOver(); 
-            snake = null;
-            clearTimeout(time);
-            return true;
-        }
-    }
-    if(snake.corps[0][0]-1==-1&&snake.direction=='gauche' || snake.corps[0][0]+1==monde.length&&snake.direction=='droite' || snake.corps[0][1]-1==-1&&snake.direction=='haut' || snake.corps[0][1]+1==monde.length&&snake.direction=='bas'){
-        createGameOver(); 
-        snake = null;
-        clearTimeout(time);
-        return true;
-    }
-    return false;
 }
 
 function step(speed){
-    if(snake.fruitManger() || fruit.position.join()===[].join()){
-        effacer(fruit.position);
-        fruit.dessinerFruit();
+    if(snake.eatFruit() || fruit.position.join()===[].join()){
+        deletePosition(fruit.position);
+        fruit.drawFruit();
     }
     if(!gameOver()){
-        snake.effacerCorps();
-        snake.deplacerCorps();
-        dessinerMonde();
+        snake.deleteBody();
+        snake.moveBody();
+        drawWorld();
         time = setTimeout(()=>{
             step(speed);
         },speed);
     }
 }
-
-function createCanvas(){
-    let newC = document.createElement("canvas");
-    newC.id="snakeGame";
-    if(taillePlateau.value==2){
-        newC.height = "550";
-        newC.width = "1300";
-    }
-    else {
-        newC.height = "500";
-        newC.width = "500";
-    }
-    
-    document.getElementsByTagName("body")[0].insertBefore(newC,menu);
-}
-
-function createGameOver(){
-    var newGO = document.createElement("div");
-    let newGOcontent = document.createElement("div");
-    let newH1 = document.createElement("h1");
-    let newBtn = document.createElement("button");
-
-    newGO.id="gameOver";
-    newGO.className="GAMEOVER";
-
-    newGOcontent.className="GAMEOVER-content";
-
-    newH1.textContent="GAME OVER";
-
-    newBtn.id="menuBtn";
-    newBtn.className="btn";
-    newBtn.textContent="MENU";
-
-    newGO.appendChild(newGOcontent);
-    newGOcontent.appendChild(newH1);
-    newGOcontent.appendChild(newBtn);
-    
-    newGO.querySelector(".btn").addEventListener("click",()=>{
-        newGO.remove();
-        deleteHeadFoot();
-        deleteCanvas();
-        menu.style.display="block";
-
-    });
-
-    document.getElementsByTagName("body")[0].insertBefore(newGO,document.querySelector("script"));
-}
-
 
 function createHeadFoot(){
     let newHead = document.createElement("section");
@@ -368,6 +196,53 @@ function createHeadFoot(){
     return [newHead,newFoot];
 }
 
+function startGame(dimension,positionSnake){
+    réinitialiserMonde(dimension);
+    createHeadFoot();
+    createCanvas();
+    menu.style.display="none";
+
+    var plateau = document.getElementById("snakeGame");
+    context = snakeGame.getContext("2d");
+    var canvaHeight = plateau.height;
+    var canvaWidth = plateau.width;
+
+    sizeBlockX = canvaWidth/world.length;
+    sizeBlockY = canvaHeight/world[1].length;
+
+    score = document.getElementById("foot").children.item(0);
+    nbFruit = document.getElementById("fruit").children.item(1);
+    apple = document.getElementById('apple');
+
+    snake = new Snake(positionSnake);
+    fruit = new Fruit(dimension);
+}
+
+//fonction pour effacer un élément sur le plateau
+function deletePosition(position){
+    if(position.join()!=[])
+        world[position[0]][position[1]]='EMPTY';
+}
+
+//fonction pour obtenir un nombre aléatoire
+function randomInteger(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function createCanvas(){
+    let newC = document.createElement("canvas");
+    newC.id="snakeGame";
+    if(sizeBoard.value==2){
+        newC.height = "700";
+        newC.width = "700";
+    }
+    else {
+        newC.height = "500";
+        newC.width = "500";
+    }
+    document.getElementsByTagName("body")[0].insertBefore(newC,menu);
+}
+
 function deleteHeadFoot(){
     document.querySelector(".header").remove();
     document.querySelector(".footer").remove();
@@ -376,3 +251,133 @@ function deleteHeadFoot(){
 function deleteCanvas(){
     document.querySelector("canvas").remove();
 }
+
+function createGameOver(){
+    var newGO = document.createElement("div");
+    let newGOcontent = document.createElement("div");
+    let newH1 = document.createElement("h1");
+    let newBtn = document.createElement("button");
+
+    newGO.id="gameOver";
+    newGO.className="GAMEOVER";
+
+    newGOcontent.className="GAMEOVER-content";
+
+    newH1.textContent="GAME OVER";
+
+    newBtn.id="menuBtn";
+    newBtn.className="btn";
+    newBtn.textContent="MENU";
+
+    newGO.appendChild(newGOcontent);
+    newGOcontent.appendChild(newH1);
+    newGOcontent.appendChild(newBtn);
+
+    newGO.querySelector(".btn").addEventListener("click",()=>{
+        newGO.remove();
+        deleteHeadFoot();
+        deleteCanvas();
+        menu.style.display="block";
+
+    });
+    document.getElementsByTagName("body")[0].insertBefore(newGO,document.querySelector("script"));
+}
+
+function gameOver(){
+    for(let i = 1; i<snake.bodySnake.length;i++){
+        if(snake.bodySnake[0].join()===snake.bodySnake[i].join()){
+            createGameOver();
+            snake = null;
+            clearTimeout(time);
+            return true;
+        }
+    }
+    if(snake.bodySnake[0][0]-1==-1&&snake.direction=='gauche' || snake.bodySnake[0][0]+1==world.length&&snake.direction=='droite' || snake.bodySnake[0][1]-1==-1&&snake.direction=='haut' || snake.bodySnake[0][1]+1==world.length&&snake.direction=='bas'){
+        createGameOver();
+        snake = null;
+        clearTimeout(time);
+        return true;
+    }
+    return false;
+}
+
+function isCheck(liste){
+    for(let i = 0;i<liste.length;i++){
+        if(liste[i].checked){
+            return liste[i].value;
+        }
+    }
+}
+
+btnStart.addEventListener("click",()=>{
+    function importJSon(url){
+        fetch(url)
+            .then(function(response) {
+                if (response.ok) {
+                    return response.json(); // une promesse
+                } else {
+                    throw ("Error " + response.status);
+                }
+            })
+            .then (function(data) {
+                startGame(data.dimensions,data.snakePosition);
+                if(isCheck(speed) == 1){
+                    step(data.lent);
+                }else if (isCheck(speed) == 2){
+                    step(data.moyen)
+                }
+                else if(isCheck(speed) == 3){
+                    step(data.rapide);
+                }
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
+    }
+    importJSon(choice(sizeBoard.value));
+});
+
+document.addEventListener('keydown',(evt)=>{
+    switch(evt.key){
+        case 'ArrowUp':
+            if(snake.direction!='bas'){
+                snake.direction='haut';
+            }
+            break;
+        case 'ArrowDown':
+            if(snake.direction!='haut'){
+                snake.direction='bas';
+            }
+            break;
+        case 'ArrowLeft':
+            if(snake.direction!='droite'){
+                snake.direction='gauche';
+            }
+            break;
+        case 'ArrowRight':
+            if(snake.direction!='gauche'){
+                snake.direction='droite';
+            }
+            break;
+        case 'z':
+            if(snake.direction!='bas'){
+                snake.direction='haut';
+            }
+            break;
+        case 's':
+            if(snake.direction!='haut'){
+                snake.direction='bas';
+            }
+            break;
+        case 'q':
+            if(snake.direction!='droite'){
+                snake.direction='gauche';
+            }
+            break;
+        case 'd':
+            if(snake.direction!='gauche'){
+                snake.direction='droite';
+            }
+            break;
+    }
+});
