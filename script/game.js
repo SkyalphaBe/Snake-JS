@@ -72,7 +72,7 @@ function startGame(dimension,positionSnake){
     
 
     longueurBlock = canvaWidth/monde.length;
-    largeurBlock = canvaHeight/monde.length;
+    largeurBlock = canvaHeight/monde[1].length;
 
     score = document.getElementById("foot").children.item(0);
     nbFruit = document.getElementById("fruit").children.item(1);
@@ -98,11 +98,13 @@ function dessinerMonde(){
     for(let i = 0; i<monde.length;i++){
         for(let j = 0; j<monde.length;j++){
             if(monde[i][j]=='SNAKE'){
-
-                context.fillStyle = 'blue';
-            }
+                context.fillStyle = 'blue'; 
+            }  
             else if(monde[i][j]=='EMPTY')
-                context.fillStyle ='#DDD5D0';
+                if(i%2==0&&j%2==0||i%2!=0&&j%2!=0)
+                    context.fillStyle ='#DDD5D0';
+                else
+                    context.fillStyle='#B0AFAF';
             if (monde[i][j]!='FRUIT')
                 context.fillRect(i*longueurBlock,j*largeurBlock, longueurBlock, largeurBlock);
         }
@@ -218,19 +220,21 @@ class Fruit {
         this.dimensionsplateau = dimension;
     }
     
-    dessinerFruit(size){
-        context.fillStyle ='#DDD5D0';
+    dessinerFruit(){
         let abscisse = entierAleatoire(0,this.dimensionsplateau[0]-1);
         let ordonnee = entierAleatoire(0,this.dimensionsplateau[1]-1);
         while(snake.corps.join().includes([abscisse,ordonnee].join())){
             abscisse = entierAleatoire(0,this.dimensionsplateau[0]-1);
             ordonnee = entierAleatoire(0,this.dimensionsplateau[1]-1);
         } 
+        if(abscisse%2==0&&ordonnee%2==0||abscisse%2!=0&&ordonnee%2!=0)
+            context.fillStyle ='#DDD5D0';
+        else
+            context.fillStyle='#B0AFAF';
         context.fillRect(abscisse*longueurBlock, ordonnee*largeurBlock, longueurBlock, largeurBlock);
         context.drawImage(appleCanva,abscisse*longueurBlock, ordonnee*largeurBlock, longueurBlock, largeurBlock);
         monde[abscisse][ordonnee]='FRUIT';
         this.position = [abscisse,ordonnee];
-        console.log(this.position)
     }
 }
 
@@ -278,8 +282,15 @@ function step(speed){
 function createCanvas(){
     let newC = document.createElement("canvas");
     newC.id="snakeGame";
-    newC.height = "500";
-    newC.width = "500";
+    if(taillePlateau.value==2){
+        newC.height = "550";
+        newC.width = "1300";
+    }
+    else {
+        newC.height = "500";
+        newC.width = "500";
+    }
+    
     document.getElementsByTagName("body")[0].insertBefore(newC,menu);
 }
 
