@@ -1,0 +1,13 @@
+{
+  "dimensions": [50, 50],
+  "lent": 400,
+  "moyen": 250,
+  "rapide" :100,
+  "food": [
+    [3,4]
+  ],
+  "snakePosition": [
+    [4,6],
+    [4,7]
+  ]
+}

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/modal.css">
     <link rel="stylesheet" href="css/main.css">
-    <audio id="eatFruit" src="sound/eatFruit.mp3"></audio>
+    <audio id="eatFruit" src="./sound/eatFruit.mp3"></audio>
     <title>Snake</title>
 </head>
 <body>
@@ -16,21 +16,20 @@
             <section class="MidBox">
                 <h2>Choisir une difficulté</h2>
                 <div class="radio">
-                    <input class="radio__input" type="radio" value="500" name="myRadio" id="myRadio1">
+                    <input class="radio__input" type="radio" value="1" name="myRadio" id="myRadio1">
                     <label class="radio__label" for="myRadio1">Facile</label>
-                    <input class="radio__input" type="radio" value="250" name="myRadio" id="myRadio2">
+                    <input class="radio__input" type="radio" value="2" name="myRadio" id="myRadio2">
                     <label class="radio__label" for="myRadio2">Moyen</label>
-                    <input class="radio__input" type="radio" value="150" name="myRadio" id="myRadio3">
+                    <input class="radio__input" type="radio" value="3" name="myRadio" id="myRadio3">
                     <label class="radio__label" for="myRadio3">Difficile</label>
                 </div>
                 <h2>Choisir la taille du terrain</h2>
                 <div class="taille">
                     <div class="taille-option">
                         <p>Petit</p>
-                        <p>Moyen</p>
                         <p>Grand</p>
                     </div>
-                    <input type="range" min="1" max="3" value="3" id="slider">
+                    <input type="range" min="1" max="2" value="2" id="slider">
                 </div>
             </section>
             <button class="btn" id="startBtn">START</button>

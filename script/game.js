@@ -1,11 +1,9 @@
 const btnStart = document.getElementById("startBtn");
-const ModalGameOver = document.getElementsByClassName("GAMEOVER")[0];
 const menu = document.getElementById("myModal");
 const vitesse = document.querySelectorAll("input[type=radio]");
-const taillePlateau = document.querySelector("input[type=range]").value;
+const taillePlateau = document.querySelector("input[type=range]");
 const head = document.getElementById("head");
 const appleCanva = document.getElementById("appleCanva");
-const goBack = document.getElementById("menuBtn");
 const audio = document.getElementById("eatFruit");
 
 var context;
@@ -14,11 +12,55 @@ var largeurBlock;
 var score;
 var nbFruit;
 var apple;
+var fruit;
+var snake;
+var time;
+var monde = [];
 
-btnStart.addEventListener("click",startGame);
+function choice(size){
+    if (size == 1){
+        return "./Json/smallCanvas.json";
+    }
+    else {
+        return "./Json/bigCanvas.json";
+    }
+}
 
-function startGame(){
-    réinitialiserMonde();
+btnStart.addEventListener("click",()=>{
+    function importJSon(url){
+        fetch(url)
+            .then(function(response) {
+                if (response.ok) {
+                    return response.json(); // une promesse
+                } else {
+                    throw ("Error " + response.status);
+                }
+            })
+            .then (function(data) {
+                startGame(data.dimensions,data.snakePosition);
+                if(isCheck(vitesse) == 1){
+                    step(data.lent);
+                }else if (isCheck(vitesse) == 2){
+                    step(data.moyen)
+                }
+                else if(isCheck(vitesse) == 3){
+                    step(data.rapide);
+                }
+
+
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
+    }
+    importJSon(choice(taillePlateau.value));
+});
+
+
+
+function startGame(dimension,positionSnake){
+
+    réinitialiserMonde(dimension);
     createHeadFoot();
     createCanvas();
     menu.style.display="none";
@@ -36,40 +78,29 @@ function startGame(){
     nbFruit = document.getElementById("fruit").children.item(1);
     apple = document.getElementById('apple');
 
-    snake = new Snake([[7,4],[7,5]]);
-    fruit = new Fruit();
-    if(isCheck(vitesse) != null){
-        step();
+    snake = new Snake(positionSnake);
+    fruit = new Fruit(dimension);
+
+}
+
+function réinitialiserMonde(size){
+    monde=[];
+    for(let i = 0 ;i<size[0];i++){
+        let subTab = [];
+        for(let j = 0;j<size[1];j++){
+            subTab.push('EMPTY');
+        }
+
+        monde.push(subTab);
     }
 }
-
-var fruit;
-var snake;
-var time;
-
-var monde = [];
-
-function réinitialiserMonde(){
-    monde = [
-        ['EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY'],
-        ['EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY'],
-        ['EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY'],
-        ['EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY'],
-        ['EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY'],
-        ['EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY'],
-        ['EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY'],
-        ['EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY'],
-        ['EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY'],
-        ['EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY','EMPTY'],
-    ];
-}
-
-
 function dessinerMonde(){
     for(let i = 0; i<monde.length;i++){
         for(let j = 0; j<monde.length;j++){
-            if(monde[i][j]=='SNAKE')
-                context.fillStyle = 'blue';   
+            if(monde[i][j]=='SNAKE'){
+
+                context.fillStyle = 'blue';
+            }
             else if(monde[i][j]=='EMPTY')
                 context.fillStyle ='#DDD5D0';
             if (monde[i][j]!='FRUIT')
@@ -164,7 +195,6 @@ class Snake {
             audio.play();
             nbFruit.innerHTML=this.score;
         }
-        console.log(this.corps);
         this.positionnerSnake();
     }
 
@@ -183,22 +213,24 @@ class Snake {
 //classe représentant le fruit
 class Fruit {
     
-    constructor(){
+    constructor(dimension){
         this.position = [];
+        this.dimensionsplateau = dimension;
     }
     
-    dessinerFruit(){
+    dessinerFruit(size){
         context.fillStyle ='#DDD5D0';
-        let abscisse = entierAleatoire(0,9);
-        let ordonnee = entierAleatoire(0,9);
+        let abscisse = entierAleatoire(0,this.dimensionsplateau[0]-1);
+        let ordonnee = entierAleatoire(0,this.dimensionsplateau[1]-1);
         while(snake.corps.join().includes([abscisse,ordonnee].join())){
-            abscisse = entierAleatoire(0,9);
-            ordonnee = entierAleatoire(0,9);
+            abscisse = entierAleatoire(0,this.dimensionsplateau[0]-1);
+            ordonnee = entierAleatoire(0,this.dimensionsplateau[1]-1);
         } 
         context.fillRect(abscisse*longueurBlock, ordonnee*largeurBlock, longueurBlock, largeurBlock);
         context.drawImage(appleCanva,abscisse*longueurBlock, ordonnee*largeurBlock, longueurBlock, largeurBlock);
         monde[abscisse][ordonnee]='FRUIT';
         this.position = [abscisse,ordonnee];
+        console.log(this.position)
     }
 }
 
@@ -228,7 +260,7 @@ function gameOver(){
     return false;
 }
 
-function step(){
+function step(speed){
     if(snake.fruitManger() || fruit.position.join()===[].join()){
         effacer(fruit.position);
         fruit.dessinerFruit();
@@ -237,7 +269,9 @@ function step(){
         snake.effacerCorps();
         snake.deplacerCorps();
         dessinerMonde();
-        time = setTimeout(step,isCheck(vitesse));
+        time = setTimeout(()=>{
+            step(speed);
+        },speed);
     }
 }
 
