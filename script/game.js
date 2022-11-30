@@ -116,19 +116,40 @@ function drawWorld(){
     for(let i = 0; i<world.length;i++){
         for(let j = 0; j<world.length;j++){
             if(world[i][j]=='SNAKE'){
-                context.fillStyle = 'blue';
+                context.fillStyle = '#775EFF';
+                context.fillRect(i*sizeBlockX,j*sizeBlockY, sizeBlockX, sizeBlockY);
+                if([i,j].join()==snake.bodySnake[0].join()){
+                    context.fillStyle='black';
+                    if(snake.direction=='haut'||snake.direction=='bas'){
+                        context.beginPath();
+                        context.arc(snake.bodySnake[0][0]*sizeBlockX+sizeBlockX/4,snake.bodySnake[0][1]*sizeBlockY+sizeBlockY/2,sizeBlockX/8,0,2*Math.PI);
+                        context.fill();
+                        context.beginPath();
+                        context.arc(snake.bodySnake[0][0]*sizeBlockX+sizeBlockX/4*3,snake.bodySnake[0][1]*sizeBlockY+sizeBlockY/2,sizeBlockX/8,0,2*Math.PI);
+                        context.fill();
+                        
+                    }
+                    else if(snake.direction=='gauche'||snake.direction=='droite'){
+                        context.beginPath();
+                        context.arc(snake.bodySnake[0][0]*sizeBlockX+sizeBlockX/2,snake.bodySnake[0][1]*sizeBlockY+sizeBlockY/4,sizeBlockX/8,0,2*Math.PI);
+                        context.fill();
+                        context.beginPath();
+                        context.arc(snake.bodySnake[0][0]*sizeBlockX+sizeBlockX/2,snake.bodySnake[0][1]*sizeBlockY+sizeBlockY/4*3,sizeBlockX/8,0,2*Math.PI);
+                        context.fill();
+                    }
+                }
+                
             }
-            else if(world[i][j]=='EMPTY')
+            else if(world[i][j]=='EMPTY'){
                 if(i%2==0&&j%2==0||i%2!=0&&j%2!=0)
                     context.fillStyle ='#DDD5D0';
                 else
                     context.fillStyle='#B0AFAF';
-            if (world[i][j]!='FRUIT')
                 context.fillRect(i*sizeBlockX,j*sizeBlockY, sizeBlockX, sizeBlockY);
+            }   
         }
     }
 }
-
 function réinitialiserMonde(size){
     world=[];
     for(let i = 0 ;i<size[0];i++){
