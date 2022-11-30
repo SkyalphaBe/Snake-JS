@@ -103,6 +103,8 @@ class Fruit {
     }
 }
 
+
+
 function choice(size){
     if (size == 1){
         return "./Json/smallCanvas.json";
@@ -150,7 +152,7 @@ function drawWorld(){
         }
     }
 }
-function réinitialiserMonde(size){
+function resetWorld(size){
     world=[];
     for(let i = 0 ;i<size[0];i++){
         let subTab = [];
@@ -218,7 +220,7 @@ function createHeadFoot(){
 }
 
 function startGame(dimension,positionSnake){
-    réinitialiserMonde(dimension);
+    resetWorld(dimension);
     createHeadFoot();
     createCanvas();
     menu.style.display="none";
@@ -235,8 +237,40 @@ function startGame(dimension,positionSnake){
     nbFruit = document.getElementById("fruit").children.item(1);
     apple = document.getElementById('apple');
 
-    snake = new Snake(positionSnake);
-    fruit = new Fruit(dimension);
+    var InstanceFruit = ((dimension)=>{
+        let instance;
+    
+        function createInstance(dimension){
+            let object = new Fruit(dimension);
+            return object;
+        }
+        return{
+            getInstance : ()=>{
+                if(!instance)
+                    instance = createInstance(dimension)
+                return instance; 
+            }
+        }
+    })(dimension);
+
+    var InstanceSnake = ((position)=>{
+        let instance;
+    
+        function createInstance(position){
+            let object = new Snake(position);
+            return object;
+        }
+        return{
+            getInstance : ()=>{
+                if(!instance)
+                    instance = createInstance(position)
+                return instance; 
+            }
+        }
+    })(positionSnake);
+
+    snake = InstanceSnake.getInstance();
+    fruit = InstanceFruit.getInstance();
 }
 
 //fonction pour effacer un élément sur le plateau
