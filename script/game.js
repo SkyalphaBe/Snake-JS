@@ -146,8 +146,18 @@ function drawWorld(){
                 else
                     context.fillStyle='#B0AFAF';
                 context.fillRect(i*sizeBlockX,j*sizeBlockY, sizeBlockX, sizeBlockY);
-            }   
+            }
+            else if(world[i][j]=='WALL'){
+                context.fillStyle='Brown';
+                context.fillRect(i*sizeBlockX,j*sizeBlockY, sizeBlockX, sizeBlockY);
+            }
         }
+    }
+}
+
+function drawWall(tabPosition){
+    for (let i = 0;i<tabPosition.length;i++){
+        world[tabPosition[i][0]][tabPosition[i][1]]='WALL';
     }
 }
 function réinitialiserMonde(size){
@@ -161,17 +171,17 @@ function réinitialiserMonde(size){
     }
 }
 
-function step(speed){
+function step(speed,wallList){
     if(snake.eatFruit() || fruit.position.join()===[].join()){
         deletePosition(fruit.position);
         fruit.drawFruit();
     }
-    if(!gameOver()){
+    if(!gameOver(wallList)){
         snake.deleteBody();
         snake.moveBody();
         drawWorld();
         time = setTimeout(()=>{
-            step(speed);
+            step(speed,wallList);
         },speed);
     }
 }
@@ -217,8 +227,9 @@ function createHeadFoot(){
     return [newHead,newFoot];
 }
 
-function startGame(dimension,positionSnake){
+function startGame(dimension,positionSnake,wallList){
     réinitialiserMonde(dimension);
+    drawWall(wallList);
     createHeadFoot();
     createCanvas();
     menu.style.display="none";
@@ -304,7 +315,7 @@ function createGameOver(){
     document.getElementsByTagName("body")[0].insertBefore(newGO,document.querySelector("script"));
 }
 
-function gameOver(){
+function gameOver(wallList){
     for(let i = 1; i<snake.bodySnake.length;i++){
         if(snake.bodySnake[0].join()===snake.bodySnake[i].join()){
             createGameOver();
@@ -313,11 +324,55 @@ function gameOver(){
             return true;
         }
     }
-    if(snake.bodySnake[0][0]-1==-1&&snake.direction=='gauche' || snake.bodySnake[0][0]+1==world.length&&snake.direction=='droite' || snake.bodySnake[0][1]-1==-1&&snake.direction=='haut' || snake.bodySnake[0][1]+1==world.length&&snake.direction=='bas'){
+    if(snake.bodySnake[0][0]-1==-1&&snake.direction=='gauche'){
         createGameOver();
         snake = null;
         clearTimeout(time);
         return true;
+    }
+    else if(snake.bodySnake[0][0]+1==world.length&&snake.direction=='droite'){
+        createGameOver();
+        snake = null;
+        clearTimeout(time);
+        return true;
+    }
+    else if(snake.bodySnake[0][1]-1==-1&&snake.direction=='haut'){
+        createGameOver();
+        snake = null;
+        clearTimeout(time);
+        return true;
+    }
+    else if(snake.bodySnake[0][1]+1==world.length&&snake.direction=='bas'){
+        createGameOver();
+        snake = null;
+        clearTimeout(time);
+        return true;
+    }
+    for(let i=0;i<wallList.length;i++){
+        if(snake.bodySnake[0][0]+1== wallList[i][0]&&snake.bodySnake[0][1]== wallList[i][1]&&snake.direction=='droite'){// || snake.bodySnake[0][0]+1==world.length&&snake.direction=='droite' || snake.bodySnake[0][1]-1==-1&&snake.direction=='haut' || snake.bodySnake[0][1]+1==world.length&&snake.direction=='bas'){
+            createGameOver();
+            snake = null;
+            clearTimeout(time);
+            return true;
+        }
+        else if(snake.bodySnake[0][0]-1== wallList[i][0]&&snake.bodySnake[0][1]== wallList[i][1]&&snake.direction=='gauche'){
+            createGameOver();
+            snake = null;
+            clearTimeout(time);
+            return true;
+        }
+        else if(snake.bodySnake[0][0]== wallList[i][0]&&snake.bodySnake[0][1]-1== wallList[i][1]&&snake.direction=='haut'){
+            createGameOver();
+            snake = null;
+            clearTimeout(time);
+            return true;
+        }
+        else if (snake.bodySnake[0][0]== wallList[i][0]&&snake.bodySnake[0][1]+1== wallList[i][1]&&snake.direction=='bas'){
+            createGameOver();
+            snake = null;
+            clearTimeout(time);
+            return true;
+        }
     }
     return false;
 }
@@ -341,14 +396,14 @@ btnStart.addEventListener("click",()=>{
                 }
             })
             .then (function(data) {
-                startGame(data.dimensions,data.snakePosition);
+                startGame(data.dimensions,data.snakePosition,data.wall);
                 if(isCheck(speed) == 1){
-                    step(data.lent);
+                    step(data.lent,data.wall);
                 }else if (isCheck(speed) == 2){
-                    step(data.moyen)
+                    step(data.moyen,data.wall)
                 }
                 else if(isCheck(speed) == 3){
-                    step(data.rapide);
+                    step(data.rapide,data.wall);
                 }
             })
             .catch(function (err) {
