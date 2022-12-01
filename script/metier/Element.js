@@ -1,3 +1,4 @@
+import {oldScore} from "./game.js";
 const sizeBoard = document.querySelector("input[type=range]");
 const menu = document.getElementById("myModal");
 
@@ -9,6 +10,7 @@ function createHeadFoot(){
     let newFruit = document.createElement("div");
     let newImg = document.createElement("img");
     let newFruitManger = document.createElement("h2");
+    let newHighScore = document.createElement("h2");
 
     newHead.id="head";
     newHead.className="header";
@@ -35,6 +37,12 @@ function createHeadFoot(){
     newFoot.appendChild(newFruit);
     newFruit.appendChild(newImg);
     newFruit.appendChild(newFruitManger);
+
+    if(oldScore.getHighScore() != 0){
+        newHighScore.id="highScore"
+        newHighScore.textContent="High Score : "+oldScore.getHighScore()*100;
+        newFoot.appendChild(newHighScore);
+    }
 
     document.getElementsByTagName("body")[0].insertBefore(newHead,menu);
     document.getElementsByTagName("body")[0].insertBefore(newFoot,document.querySelector("script"));

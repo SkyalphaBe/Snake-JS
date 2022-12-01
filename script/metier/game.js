@@ -1,17 +1,21 @@
 import { Snake } from "./Snake.js";
 import { Fruit } from "./Fruit.js";
+import { HighScore } from "./HighScore.js";
 import {createCanvas,createGameOver,createHeadFoot,deleteCanvas,deleteHeadFoot,sizeBoard,menu} from "./Element.js";
 
 const appleCanva = document.getElementById("appleCanva");
 const wallcheckBox = document.getElementById("murCheck");
+
+var oldScore = new HighScore();
+oldScore.createStorage();
 
 /**
  * Classe contenant toute les méthodes fonctionnelles du jeu
  */
 class Game{
     constructor() {
-        this.context =null;
-        this.fruit =null;
+        this.context = null;
+        this.fruit = null;
         this.snake = null;
         this.world = [];
         this.sizeBlockY = null;
@@ -53,8 +57,14 @@ class Game{
                     this.context.fillStyle='Brown';
                     this.context.fillRect(i*this.sizeBlockX,j*this.sizeBlockY, this.sizeBlockX, this.sizeBlockY);
                 }
-                else if (this.world[i][j]=='FRUIT')
+                else if (this.world[i][j]=='FRUIT'){
+                    if(i%2==0&&j%2==0||i%2!=0&&j%2!=0)
+                        this.context.fillStyle ='#DDD5D0';
+                    else
+                        this.context.fillStyle='#B0AFAF';
+                    this.context.fillRect(i*this.sizeBlockX,j*this.sizeBlockY, this.sizeBlockX, this.sizeBlockY);
                     this.context.drawImage(appleCanva,i*this.sizeBlockX, j*this.sizeBlockY, this.sizeBlockX, this.sizeBlockY);
+                }
             }
         }
     }
@@ -171,6 +181,7 @@ class Game{
     }
 
     gameOver(wallList,time){
+        oldScore.compareNewScore(this.snake.score);
         for(let i = 1; i<this.snake.bodySnake.length;i++){
             if(this.snake.bodySnake[0].join()===this.snake.bodySnake[i].join()){
                 createGameOver();
@@ -237,5 +248,5 @@ class Game{
 
 
 
-export {Game,wallcheckBox,sizeBoard};
+export {Game,wallcheckBox,sizeBoard,oldScore};
 

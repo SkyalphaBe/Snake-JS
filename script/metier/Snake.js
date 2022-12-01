@@ -77,7 +77,7 @@ const audio = document.getElementById("eatFruit");
             this.bodySnake.pop();
         } else {
             this.score++;
-            score.innerHTML = "score : " + this.score * 100;
+            score.innerHTML = "Score : " + this.score * 100;
             audio.play();
             nbFruit.innerHTML = this.score;
         }
