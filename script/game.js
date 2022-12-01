@@ -7,11 +7,8 @@ const appleCanva = document.getElementById("appleCanva");
 const audio = document.getElementById("eatFruit");
 
 var context;
-var sizeBlockX;
-var sizeBlockY;
-var score;
 var nbFruit;
-var apple;
+var score;
 var fruit;
 var snake;
 var time;
@@ -85,7 +82,7 @@ class Fruit {
         this.dimensionBoard = dimension;
     }
 
-    drawFruit(){
+    drawFruit(sizeBlockX,sizeBlockY){
         let abscisse = randomInteger(0,this.dimensionBoard[0]-1);
         let ordonnee = randomInteger(0,this.dimensionBoard[1]-1);
         while(snake.bodySnake.join().includes([abscisse,ordonnee].join())){
@@ -112,7 +109,7 @@ function choice(size){
     }
 }
 
-function drawWorld(){
+function drawWorld(sizeBlockX,sizeBlockY){
     for(let i = 0; i<world.length;i++){
         for(let j = 0; j<world.length;j++){
             if(world[i][j]=='SNAKE'){
@@ -174,17 +171,17 @@ function resetWorld(size){
     }
 }
 
-function step(speed,wallList){
+function step(speed,wallList,sizeBlockX,sizeBlockY){
     if(snake.eatFruit() || fruit.position.join()===[].join()){
         deletePosition(fruit.position);
-        fruit.drawFruit();
+        fruit.drawFruit(sizeBlockX,sizeBlockY);
     }
-    if(!gameOver(wallList)){
+    if(!gameOver(wallList,sizeBlockX,sizeBlockY)){
         snake.deleteBody();
         snake.moveBody();
-        drawWorld();
+        drawWorld(sizeBlockX,sizeBlockY);
         time = setTimeout(()=>{
-            step(speed,wallList);
+            step(speed,wallList,sizeBlockX,sizeBlockY);
         },speed);
     }
 }
@@ -237,17 +234,14 @@ function startGame(dimension,positionSnake,wallList){
     createCanvas();
     menu.style.display="none";
 
-    var plateau = document.getElementById("snakeGame");
+    let plateau = document.getElementById("snakeGame");
     context = snakeGame.getContext("2d");
-    var canvaHeight = plateau.height;
-    var canvaWidth = plateau.width;
 
-    sizeBlockX = canvaWidth/world.length;
-    sizeBlockY = canvaHeight/world[1].length;
+    let sizeBlockX = plateau.height/world.length;
+    let sizeBlockY = plateau.width/world[1].length;
 
     score = document.getElementById("foot").children.item(0);
     nbFruit = document.getElementById("fruit").children.item(1);
-    apple = document.getElementById('apple');
 
     var InstanceFruit = ((dimension)=>{
         let instance;
@@ -283,6 +277,8 @@ function startGame(dimension,positionSnake,wallList){
 
     snake = InstanceSnake.getInstance();
     fruit = InstanceFruit.getInstance();
+
+    return [sizeBlockX,sizeBlockY];
 }
 
 //fonction pour effacer un élément sur le plateau
@@ -384,7 +380,7 @@ function gameOver(wallList){
         return true;
     }
     for(let i=0;i<wallList.length;i++){
-        if(snake.bodySnake[0][0]+1== wallList[i][0]&&snake.bodySnake[0][1]== wallList[i][1]&&snake.direction=='droite'){// || snake.bodySnake[0][0]+1==world.length&&snake.direction=='droite' || snake.bodySnake[0][1]-1==-1&&snake.direction=='haut' || snake.bodySnake[0][1]+1==world.length&&snake.direction=='bas'){
+        if(snake.bodySnake[0][0]+1== wallList[i][0]&&snake.bodySnake[0][1]== wallList[i][1]&&snake.direction=='droite'){
             createGameOver();
             snake = null;
             clearTimeout(time);
@@ -431,14 +427,14 @@ btnStart.addEventListener("click",()=>{
                 }
             })
             .then (function(data) {
-                startGame(data.dimensions,data.snakePosition,data.wall);
+                let sizesBlock = startGame(data.dimensions,data.snakePosition,data.wall);
                 if(isCheck(speed) == 1){
-                    step(data.lent,data.wall);
+                    step(data.lent,data.wall,sizesBlock[0],sizesBlock[1]);
                 }else if (isCheck(speed) == 2){
-                    step(data.moyen,data.wall)
+                    step(data.moyen,data.wall,sizesBlock[0],sizesBlock[1])
                 }
                 else if(isCheck(speed) == 3){
-                    step(data.rapide,data.wall);
+                    step(data.rapide,data.wall,sizesBlock[0],sizesBlock[1]);
                 }
             })
             .catch(function (err) {
@@ -449,7 +445,8 @@ btnStart.addEventListener("click",()=>{
 });
 
 document.addEventListener('keydown',(evt)=>{
-    switch(evt.key){
+    if(snake!=null){
+        switch(evt.key){
         case 'ArrowUp':
             if(snake.direction!='bas'){
                 snake.direction='haut';
@@ -490,5 +487,7 @@ document.addEventListener('keydown',(evt)=>{
                 snake.direction='droite';
             }
             break;
+        }
     }
+    
 });
