@@ -35,7 +35,6 @@
     color: #FFFFFF;
     background-color: #6c706d;
     transition: 0.3s;
-    margin-top: 5%;
 }
 
 .btn:hover{
@@ -90,7 +89,7 @@
 .size-option{
     display: flex;
     justify-content: space-between;
-    width: 20vw;
+    width: 15vw;
 }
 
 #slider{
@@ -98,7 +97,7 @@
     outline: none;
     border-radius: 15px;
     padding: 1%;
-    width: 20vw;
+    width: 15vw;
 }
 
 #slider::-webkit-slider-thumb{
@@ -110,7 +109,28 @@
     cursor: pointer;
     z-index: 3;
 }
+.btnWall{
+    padding: 5%;
+    display: flex;
+    align-items: center;
 
+}
+#murCheck{
+    -webkit-appearance: none;
+    background-color: #fff;
+    font: inherit;
+    color: currentColor;
+    width: 1.15em;
+    height: 1.15em;
+    border: 0.15em solid currentColor;
+    border-radius: 0.40em;
+    transform: translateY(-0.075em);
+    margin-right: 10px;
+}
+#murCheck:checked{
+    -webkit-appearance: none;
+    background-color: #824444;
+}
 /* game over part */
 
 .GAMEOVER{

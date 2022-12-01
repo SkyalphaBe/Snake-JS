@@ -5,6 +5,7 @@ const sizeBoard = document.querySelector("input[type=range]");
 const head = document.getElementById("head");
 const appleCanva = document.getElementById("appleCanva");
 const audio = document.getElementById("eatFruit");
+const wallcheckBox = document.getElementById("murCheck");
 
 var context;
 var sizeBlockX;
@@ -147,7 +148,7 @@ function drawWorld(){
                     context.fillStyle='#B0AFAF';
                 context.fillRect(i*sizeBlockX,j*sizeBlockY, sizeBlockX, sizeBlockY);
             }
-            else if(world[i][j]=='WALL'){
+            else if(world[i][j]=='WALL' && wallcheckBox.checked){
                 context.fillStyle='Brown';
                 context.fillRect(i*sizeBlockX,j*sizeBlockY, sizeBlockX, sizeBlockY);
             }
@@ -232,7 +233,9 @@ function createHeadFoot(){
 
 function startGame(dimension,positionSnake,wallList){
     resetWorld(dimension);
-    drawWall(wallList);
+    if (wallcheckBox.checked){
+        drawWall(wallList);
+    }
     createHeadFoot();
     createCanvas();
     menu.style.display="none";
@@ -383,30 +386,32 @@ function gameOver(wallList){
         clearTimeout(time);
         return true;
     }
-    for(let i=0;i<wallList.length;i++){
-        if(snake.bodySnake[0][0]+1== wallList[i][0]&&snake.bodySnake[0][1]== wallList[i][1]&&snake.direction=='droite'){// || snake.bodySnake[0][0]+1==world.length&&snake.direction=='droite' || snake.bodySnake[0][1]-1==-1&&snake.direction=='haut' || snake.bodySnake[0][1]+1==world.length&&snake.direction=='bas'){
-            createGameOver();
-            snake = null;
-            clearTimeout(time);
-            return true;
-        }
-        else if(snake.bodySnake[0][0]-1== wallList[i][0]&&snake.bodySnake[0][1]== wallList[i][1]&&snake.direction=='gauche'){
-            createGameOver();
-            snake = null;
-            clearTimeout(time);
-            return true;
-        }
-        else if(snake.bodySnake[0][0]== wallList[i][0]&&snake.bodySnake[0][1]-1== wallList[i][1]&&snake.direction=='haut'){
-            createGameOver();
-            snake = null;
-            clearTimeout(time);
-            return true;
-        }
-        else if (snake.bodySnake[0][0]== wallList[i][0]&&snake.bodySnake[0][1]+1== wallList[i][1]&&snake.direction=='bas'){
-            createGameOver();
-            snake = null;
-            clearTimeout(time);
-            return true;
+    if (wallcheckBox.checked){
+        for(let i=0;i<wallList.length;i++){
+            if(snake.bodySnake[0][0]+1== wallList[i][0]&&snake.bodySnake[0][1]== wallList[i][1]&&snake.direction=='droite'){// || snake.bodySnake[0][0]+1==world.length&&snake.direction=='droite' || snake.bodySnake[0][1]-1==-1&&snake.direction=='haut' || snake.bodySnake[0][1]+1==world.length&&snake.direction=='bas'){
+                createGameOver();
+                snake = null;
+                clearTimeout(time);
+                return true;
+            }
+            else if(snake.bodySnake[0][0]-1== wallList[i][0]&&snake.bodySnake[0][1]== wallList[i][1]&&snake.direction=='gauche'){
+                createGameOver();
+                snake = null;
+                clearTimeout(time);
+                return true;
+            }
+            else if(snake.bodySnake[0][0]== wallList[i][0]&&snake.bodySnake[0][1]-1== wallList[i][1]&&snake.direction=='haut'){
+                createGameOver();
+                snake = null;
+                clearTimeout(time);
+                return true;
+            }
+            else if (snake.bodySnake[0][0]== wallList[i][0]&&snake.bodySnake[0][1]+1== wallList[i][1]&&snake.direction=='bas'){
+                createGameOver();
+                snake = null;
+                clearTimeout(time);
+                return true;
+            }
         }
     }
     return false;
@@ -490,5 +495,14 @@ document.addEventListener('keydown',(evt)=>{
                 snake.direction='droite';
             }
             break;
+    }
+});
+
+wallcheckBox.addEventListener("click",()=>{
+    if (wallcheckBox.checked){
+       document.getElementsByClassName("btnWall")[0].querySelector("label").textContent="Avec mur";
+    }
+    else if (!wallcheckBox.checked){
+        document.getElementsByClassName("btnWall")[0].querySelector("label").textContent="Sans mur";
     }
 });
