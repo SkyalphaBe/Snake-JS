@@ -8,11 +8,8 @@ const audio = document.getElementById("eatFruit");
 const wallcheckBox = document.getElementById("murCheck");
 
 var context;
-var nbFruit;
-var score;
 var fruit;
 var snake;
-var time;
 var world = [];
 
 //classe correspondant au snake
@@ -29,7 +26,7 @@ class Snake {
     positionSnake(){
         this.bodySnake.forEach(element=>this.positionBody(element));
     }
-    moveBody(){
+    moveBody(nbFruit,score){
         let head;
         head = [];
         switch(this.direction){
@@ -172,17 +169,17 @@ function resetWorld(size){
     }
 }
 
-function step(speed,wallList,sizeBlockX,sizeBlockY){
+function step(speed,wallList,sizeBlockX,sizeBlockY,nbFruit,score,time){
     if(snake.eatFruit() || fruit.position.join()===[].join()){
         deletePosition(fruit.position);
         fruit.drawFruit(sizeBlockX,sizeBlockY);
     }
-    if(!gameOver(wallList,sizeBlockX,sizeBlockY)){
+    if(!gameOver(wallList,time)){
         snake.deleteBody();
-        snake.moveBody();
+        snake.moveBody(nbFruit,score);
         drawWorld(sizeBlockX,sizeBlockY);
         time = setTimeout(()=>{
-            step(speed,wallList,sizeBlockX,sizeBlockY);
+            step(speed,wallList,sizeBlockX,sizeBlockY,nbFruit,score,time);
         },speed);
     }
 }
@@ -243,8 +240,8 @@ function startGame(dimension,positionSnake,wallList){
     let sizeBlockX = plateau.height/world.length;
     let sizeBlockY = plateau.width/world[1].length;
 
-    score = document.getElementById("foot").children.item(0);
-    nbFruit = document.getElementById("fruit").children.item(1);
+    let score = document.getElementById("foot").children.item(0);
+    let nbFruit = document.getElementById("fruit").children.item(1);
 
     var InstanceFruit = ((dimension)=>{
         let instance;
@@ -281,7 +278,7 @@ function startGame(dimension,positionSnake,wallList){
     snake = InstanceSnake.getInstance();
     fruit = InstanceFruit.getInstance();
 
-    return [sizeBlockX,sizeBlockY];
+    return [sizeBlockX,sizeBlockY,nbFruit,score];
 }
 
 //fonction pour effacer un élément sur le plateau
@@ -349,7 +346,7 @@ function createGameOver(){
     document.getElementsByTagName("body")[0].insertBefore(newGO,document.querySelector("script"));
 }
 
-function gameOver(wallList){
+function gameOver(wallList,time){
     for(let i = 1; i<snake.bodySnake.length;i++){
         if(snake.bodySnake[0].join()===snake.bodySnake[i].join()){
             createGameOver();
@@ -432,14 +429,15 @@ btnStart.addEventListener("click",()=>{
                 }
             })
             .then (function(data) {
-                let sizesBlock = startGame(data.dimensions,data.snakePosition,data.wall);
+                let infoGame = startGame(data.dimensions,data.snakePosition,data.wall);
+                let time;
                 if(isCheck(speed) == 1){
-                    step(data.lent,data.wall,sizesBlock[0],sizesBlock[1]);
+                    step(data.lent,data.wall,infoGame[0],infoGame[1],infoGame[2],infoGame[3],time);
                 }else if (isCheck(speed) == 2){
-                    step(data.moyen,data.wall,sizesBlock[0],sizesBlock[1])
+                    step(data.moyen,data.wall,infoGame[0],infoGame[1],infoGame[2],infoGame[3],time)
                 }
                 else if(isCheck(speed) == 3){
-                    step(data.rapide,data.wall,sizesBlock[0],sizesBlock[1]);
+                    step(data.rapide,data.wall,infoGame[0],infoGame[1],infoGame[2],infoGame[3],time);
                 }
             })
             .catch(function (err) {
