@@ -76,7 +76,7 @@ function deleteCanvas(){
 function createGameOver(){
     var newGO = document.createElement("div");
     let newGOcontent = document.createElement("div");
-    let newH1 = document.createElement("h1");
+    let img = document.createElement('img')
     let newBtn = document.createElement("button");
 
     newGO.id="gameOver";
@@ -84,14 +84,16 @@ function createGameOver(){
 
     newGOcontent.className="GAMEOVER-content";
 
-    newH1.textContent="GAME OVER";
+    img.src = '../../Image/gameover.gif';
+    img.style.height = '50%';
+    img.style.width = '80%';
 
     newBtn.id="menuBtn";
     newBtn.className="btn";
     newBtn.textContent="MENU";
 
     newGO.appendChild(newGOcontent);
-    newGOcontent.appendChild(newH1);
+    newGOcontent.appendChild(img);
     newGOcontent.appendChild(newBtn);
 
     newGO.querySelector(".btn").addEventListener("click",()=>{
