@@ -23,7 +23,10 @@ class Game{
         this.score = 0;
         this.nbFruit = 0;
     }
-
+    /**
+     * Méthode pour rendre l'état d'origine à la carte (toutes les cases a 'EMPTY")
+     * @param size attribut qui represente la tableau qui compose la carte
+     */
     resetWorld(size){
         this.world=[];
         for(let i = 0 ;i<size[0];i++){
@@ -35,6 +38,9 @@ class Game{
         }
     }
 
+    /**
+     * Méthode qui permet de dessiner les objets en fonction de leurs position
+     */
     drawWorld(){
         for(let i = 0; i<this.world.length;i++){
             for(let j = 0; j<this.world.length;j++){
@@ -69,6 +75,9 @@ class Game{
         }
     }
 
+    /**
+     * Méthode pour dessinner les yeux sur la tête du serpent
+     */
     drawEyes(){
         this.context.fillStyle='black';
         if(this.snake.direction=='haut'||this.snake.direction=='bas'){
@@ -94,6 +103,10 @@ class Game{
         }
     }
 
+    /**
+     * Méthode pour definir la postion des murs
+     * @param tabPosition attribut qui represente toutes les positions dans la tableau 'wall' du fichier Json
+     */
     drawWall(tabPosition){
         for (let i = 0;i<tabPosition.length;i++){
             this.world[tabPosition[i][0]][tabPosition[i][1]]='WALL';
@@ -105,6 +118,12 @@ class Game{
         this.snake.bodySnake.forEach(element=>this.deletePosition(element));
     }
 
+    /**
+     * Méthode pour definir la position du fruit si il est manger ainsi que de faire deplacer le serpent en fonctiond de la vitesse entrée en paramêtre
+     * @param speed Attribut qui représente la vitesse a laquele le serpent vas ce dépalcer
+     * @param wallList Attribut qui représente ma liste de l'essemble des murs
+     * @param time
+     */
     step(speed,wallList,time){
         if(this.snake.eatFruit(this.fruit) || this.fruit.position.join()===[].join()){
             this.deletePosition(this.fruit.position);
@@ -120,6 +139,12 @@ class Game{
         }
     }
 
+    /**
+     * Méthode qui lance le fonctionnement du jeux
+     * @param dimension Attribut qui représente la taille de la carte
+     * @param positionSnake Attribut qui représente la position du seprent
+     * @param wallList Attribut qui représente la liste des murs
+     */
     start(dimension,positionSnake,wallList){
         this.resetWorld(dimension);
         if (wallcheckBox.checked){
@@ -180,6 +205,12 @@ class Game{
             this.world[position[0]][position[1]]='EMPTY';
     }
 
+    /**
+     * méthode qui permet de definir quand le joueur perds la partie
+     * @param wallList Attribut qui représente la liste des position des mur;
+     * @param time valeur su Timeout de la page
+     * @returns {boolean} retour en fonction de la condition des 'if' true si perdu false sinon
+     */
     gameOver(wallList,time){
         oldScore.compareNewScore(this.snake.score);
         for(let i = 1; i<this.snake.bodySnake.length;i++){

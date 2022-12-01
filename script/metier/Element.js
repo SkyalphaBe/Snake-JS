@@ -2,6 +2,10 @@ import {oldScore} from "./game.js";
 const sizeBoard = document.querySelector("input[type=range]");
 const menu = document.getElementById("myModal");
 
+/**
+ * méthode pour créer et insérer dans le DOM le header ainsi que le footeur
+ * @returns {HTMLElement[]} revoie les nouveaux element créer Header et Footer
+ */
 function createHeadFoot(){
     let newHead = document.createElement("section");
     let newTitle = document.createElement("h1");
@@ -50,6 +54,9 @@ function createHeadFoot(){
     return [newHead,newFoot];
 }
 
+/**
+ * Méthode pour créer le canvas et l'insérer dans le DOM
+ */
 function createCanvas(){
     let newC = document.createElement("canvas");
     newC.id="snakeGame";
@@ -64,15 +71,24 @@ function createCanvas(){
     document.getElementsByTagName("body")[0].insertBefore(newC,menu);
 }
 
+/**
+ * Méthode pour supprimer le header et le footer du DOM
+ */
 function deleteHeadFoot(){
     document.querySelector(".header").remove();
     document.querySelector(".footer").remove();
 }
 
+/**
+ * Méthode pour supprimer le canvas du DOm
+ */
 function deleteCanvas(){
     document.querySelector("canvas").remove();
 }
 
+/**
+ * Méthode pour créer et insérer le pop_up GAMEOVER dans le DOM
+ */
 function createGameOver(){
     var newGO = document.createElement("div");
     let newGOcontent = document.createElement("div");
@@ -94,6 +110,9 @@ function createGameOver(){
     newGOcontent.appendChild(newH1);
     newGOcontent.appendChild(newBtn);
 
+    /**
+     * Listener pour revenir au menu principale ainsi que supprimer les élèments de la page de jeux du DOM
+     */
     newGO.querySelector(".btn").addEventListener("click",()=>{
         newGO.remove();
         deleteHeadFoot();

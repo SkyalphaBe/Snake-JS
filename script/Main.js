@@ -3,6 +3,11 @@ import {Game,wallcheckBox,sizeBoard} from './metier/game.js';
 const btnStart = document.getElementById("startBtn");
 const speed = document.querySelectorAll("input[type=radio]");
 
+/**
+ * Méthode qui renvoie un fichier Json en fonction de la taill de la carte
+ * @param size attribut représentant la taille de carte choisi par le joueur
+ * @returns {string} renvoie l'url du fichier Json
+ */
 function choice(size){
     if (size == 1){
         return "./Json/smallCanvas.json";
@@ -12,6 +17,11 @@ function choice(size){
     }
 }
 
+/**
+ * Méthode pour connaitre le choix effectuer par le joueur à de la difficulté
+ * @param liste attribut représentant une liste d'elment de type bouton Radio
+ * @returns {*} renvoie la valeur du bouton radio selectionner par le joueur
+ */
 function isCheck(liste){
     for(let i = 0;i<liste.length;i++){
         if(liste[i].checked){
@@ -23,6 +33,10 @@ function isCheck(liste){
 var InstanceGame = (()=>{
     let instance;
 
+    /**
+     * Méthode pour créer l'instance unique de la classe Game
+      * @returns {Game}
+     */
     function createInstance(){
         let object = new Game();
         return object;
@@ -37,6 +51,9 @@ var InstanceGame = (()=>{
 })();
 var game = InstanceGame.getInstance();
 
+/**
+ * Listener qui verifie le moment ou on click sur le bouton start pour lancer l'execution de notre jeux
+ */
 btnStart.addEventListener("click",()=>{
     function importJSon(url){
         fetch(url)
@@ -66,6 +83,9 @@ btnStart.addEventListener("click",()=>{
     importJSon(choice(sizeBoard.value));
 });
 
+/**
+ * Listener pour veifier quel touche du clavier est pressé lors de l'éxecution du jeux pour déplacer le serpent
+ */
 document.addEventListener('keydown',(evt)=>{
     if(game.snake!=null){
         switch(evt.key){
@@ -114,6 +134,9 @@ document.addEventListener('keydown',(evt)=>{
 
 });
 
+/**
+ * Listenner pour verifier si l'utilisateur a cocher la case pour créer ou non des mur sur la carte
+ */
 wallcheckBox.addEventListener("click",()=>{
     if (wallcheckBox.checked){
         document.getElementsByClassName("btnWall")[0].querySelector("label").textContent="Avec mur";
