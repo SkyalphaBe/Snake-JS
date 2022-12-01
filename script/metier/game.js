@@ -6,7 +6,24 @@ import {createCanvas,createGameOver,createHeadFoot,deleteCanvas,deleteHeadFoot,s
 const appleCanva = document.getElementById("appleCanva");
 const wallcheckBox = document.getElementById("murCheck");
 
-var oldScore = new HighScore();
+var InstanceHighScore = (()=>{
+    let instance;
+
+    function createInstance(){
+        let object = new HighScore();
+        return object;
+    }
+    return{
+        getInstance : ()=>{
+            if(!instance)
+                instance = createInstance()
+            return instance;
+        }
+    }
+})();
+
+
+var oldScore = InstanceHighScore.getInstance();
 oldScore.createStorage();
 
 /**
@@ -163,40 +180,8 @@ class Game{
         this.score = document.getElementById("foot").children.item(0);
         this.nbFruit = document.getElementById("fruit").children.item(1);
 
-        var InstanceFruit = ((dimension)=>{
-            let instance;
-
-            function createInstance(dimension){
-                let object = new Fruit(dimension);
-                return object;
-            }
-            return{
-                getInstance : ()=>{
-                    if(!instance)
-                        instance = createInstance(dimension)
-                    return instance;
-                }
-            }
-        })(dimension);
-
-        var InstanceSnake = ((position)=>{
-            let instance;
-
-            function createInstance(position){
-                let object = new Snake(position);
-                return object;
-            }
-            return{
-                getInstance : ()=>{
-                    if(!instance)
-                        instance = createInstance(position)
-                    return instance;
-                }
-            }
-        })(positionSnake);
-
-        this.snake = InstanceSnake.getInstance();
-        this.fruit = InstanceFruit.getInstance();
+        this.snake = new Snake(positionSnake);
+        this.fruit =new Fruit(dimension);
     }
 
     //fonction pour effacer un élément sur le plateau
@@ -205,71 +190,49 @@ class Game{
             this.world[position[0]][position[1]]='EMPTY';
     }
 
+    stop(){
+        createGameOver();
+        this.snake = null;
+        clearTimeout(time);
+        return true;
+    }
     /**
      * méthode qui permet de definir quand le joueur perds la partie
      * @param wallList Attribut qui représente la liste des position des mur;
      * @param time valeur su Timeout de la page
-     * @returns {boolean} retour en fonction de la condition des 'if' true si perdu false sinon
+     * @returns {boolean}  renvoie false si pas de condition remplie
      */
     gameOver(wallList,time){
         oldScore.compareNewScore(this.snake.score);
         for(let i = 1; i<this.snake.bodySnake.length;i++){
             if(this.snake.bodySnake[0].join()===this.snake.bodySnake[i].join()){
-                createGameOver();
-                this.snake = null;
-                clearTimeout(time);
-                return true;
-            }
-        }
+                this.stop();
+
         if(this.snake.bodySnake[0][0]-1==-1&&this.snake.direction=='gauche'){
-            createGameOver();
-            this.snake = null;
-            clearTimeout(time);
-            return true;
+            this.stop();
         }
         else if(this.snake.bodySnake[0][0]+1==this.world.length&&this.snake.direction=='droite'){
-            createGameOver();
-            this.snake = null;
-            clearTimeout(time);
-            return true;
+            this.stop();
         }
         else if(this.snake.bodySnake[0][1]-1==-1&&this.snake.direction=='haut'){
-            createGameOver();
-            this.snake = null;
-            clearTimeout(time);
-            return true;
+            this.stop();
         }
         else if(this.snake.bodySnake[0][1]+1==this.world.length&&this.snake.direction=='bas'){
-            createGameOver();
-            this.snake = null;
-            clearTimeout(time);
-            return true;
+            this.stop();
         }
         if (wallcheckBox.checked){
             for(let i=0;i<wallList.length;i++){
                 if(this.snake.bodySnake[0][0]+1== wallList[i][0]&&this.snake.bodySnake[0][1]== wallList[i][1]&&this.snake.direction=='droite'){
-                    createGameOver();
-                    this.snake = null;
-                    clearTimeout(time);
-                    return true;
+                    this.stop();
                 }
                 else if(this.snake.bodySnake[0][0]-1== wallList[i][0]&&this.snake.bodySnake[0][1]== wallList[i][1]&&this.snake.direction=='gauche'){
-                    createGameOver();
-                    this.snake = null;
-                    clearTimeout(time);
-                    return true;
+                    this.stop();
                 }
                 else if(this.snake.bodySnake[0][0]== wallList[i][0]&&this.snake.bodySnake[0][1]-1== wallList[i][1]&&this.snake.direction=='haut'){
-                    createGameOver();
-                    this.snake = null;
-                    clearTimeout(time);
-                    return true;
+                    this.stop();
                 }
                 else if (this.snake.bodySnake[0][0]== wallList[i][0]&&this.snake.bodySnake[0][1]+1== wallList[i][1]&&this.snake.direction=='bas'){
-                    createGameOver();
-                    this.snake = null;
-                    clearTimeout(time);
-                    return true;
+                    this.stop();
                 }
             }
         }
