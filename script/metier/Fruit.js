@@ -1,6 +1,6 @@
 /**
  * Classe correspondant à un fruit
- * @author Valentin SEGALLA François GRAUX
+ * @author Valentin SEGALLA, François GRAUX
  */
  class Fruit {
     /**

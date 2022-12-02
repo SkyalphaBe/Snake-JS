@@ -1,11 +1,15 @@
+/**
+ * @author Valentin SEGALLA, François GRAUX
+ */
+
 import {Game,wallcheckBox,sizeBoard} from './metier/game.js';
 
 const btnStart = document.getElementById("startBtn");
 const speed = document.querySelectorAll("input[type=radio]");
 
 /**
- * Méthode qui renvoie un fichier Json en fonction de la taill de la carte
- * @param size attribut représentant la taille de carte choisi par le joueur
+ * Méthode qui renvoie un fichier Json en fonction de la taille de la carte
+ * @param size variable représentant la taille de carte choisi par le joueur
  * @returns {string} renvoie l'url du fichier Json
  */
 function choice(size){
@@ -18,8 +22,8 @@ function choice(size){
 }
 
 /**
- * Méthode pour connaitre le choix effectuer par le joueur à de la difficulté
- * @param liste attribut représentant une liste d'elment de type bouton Radio
+ * Méthode pour connaitre le choix effectuer par le joueur à propos de la difficulté
+ * @param liste variable représentant une liste d'element de type bouton Radio
  * @returns {*} renvoie la valeur du bouton radio selectionner par le joueur
  */
 function isCheck(liste){
@@ -65,6 +69,7 @@ btnStart.addEventListener("click",()=>{
                 }
             })
             .then (function(data) {
+                //manipulation des données du Json dans les différentes méthodes ou on les utilise
                 game.start(data.dimensions,data.snakePosition,data.wall);
                 let time;
                 if(isCheck(speed) == 1){
@@ -84,7 +89,7 @@ btnStart.addEventListener("click",()=>{
 });
 
 /**
- * Listener pour veifier quel touche du clavier est pressé lors de l'éxecution du jeux pour déplacer le serpent
+ * Listener pour verifier quel touche du clavier est pressé lors de l'execution du jeux pour déplacer le serpent
  */
 document.addEventListener('keydown',(evt)=>{
     if(game.snake!=null){
@@ -135,7 +140,7 @@ document.addEventListener('keydown',(evt)=>{
 });
 
 /**
- * Listenner pour verifier si l'utilisateur a cocher la case pour créer ou non des mur sur la carte
+ * Listenner pour verifier si l'utilisateur à cocher la case pour créer ou non des mur sur la carte
  */
 wallcheckBox.addEventListener("click",()=>{
     if (wallcheckBox.checked){

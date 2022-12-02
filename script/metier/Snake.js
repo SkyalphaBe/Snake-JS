@@ -2,7 +2,7 @@ const audio = document.getElementById("eatFruit");
 
 /**
  * Classe correspondant au serpent
- * @author Valentin SEGALLA François GRAUX
+ * @author Valentin SEGALLA, François GRAUX
  */
  class Snake {
     /**
@@ -27,7 +27,7 @@ const audio = document.getElementById("eatFruit");
     }
 
     /**
-     * méthode pour positionner le serpent dans le tableau world
+     * Méthode pour positionner le serpent dans le tableau world
      * @param position position d'une partie du corps
      * @param world tableau correspondant au monde/plateau du jeu
      */
@@ -36,7 +36,7 @@ const audio = document.getElementById("eatFruit");
     }
 
     /**
-     * méthode permettant de positionnner tout le serpent dans le monde
+     * Méthode permettant de positionnner tout le serpent dans le monde
      * @param world tableau correspondant au monde/plateau du jeu
      */
     positionSnake(world){
@@ -44,7 +44,7 @@ const audio = document.getElementById("eatFruit");
     }
 
     /**
-     * méthode permettant de déplacer le corps sur le plateau
+     * Méthode permettant de déplacer le corps sur le plateau
      * @param nbFruit élément HTML pour afficher le nombre de fruit mangé
      * @param score élément HTML pour afficher le score de la partie actuelle
      * @param fruit Objet de la classe Fruit
@@ -85,7 +85,7 @@ const audio = document.getElementById("eatFruit");
     }
 
     /**
-     * méthode vérifiant si un fruit est mangé
+     * Méthode vérifiant si un fruit est mangé
      * @param fruit Objet de la classe Fruit
      * @returns {boolean} True si le fruit est mangé, sinon False
      */

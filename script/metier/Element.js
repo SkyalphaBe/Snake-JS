@@ -1,3 +1,7 @@
+/**
+ * @author Valentin SEGALLA, François GRAUX
+ */
+
 import {oldScore} from "./game.js";
 const sizeBoard = document.querySelector("input[type=range]");
 const menu = document.getElementById("myModal");
@@ -78,9 +82,8 @@ function deleteHeadFoot(){
     document.querySelector(".header").remove();
     document.querySelector(".footer").remove();
 }
-
 /**
- * Méthode pour supprimer le canvas du DOm
+ * Méthode pour supprimer le canvas du DOM
  */
 function deleteCanvas(){
     document.querySelector("canvas").remove();

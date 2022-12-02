@@ -1,3 +1,4 @@
+/*style pour le menu flottant*/
 .modal{
     display: block;
     position: fixed;
@@ -15,7 +16,7 @@
     margin: 5% 1% 5% 1%;
     border-radius: 15px;
 }
-
+/*style pour le contenu du menu*/
 .modal-Content{
     display: flex;
     align-items: center;
@@ -26,7 +27,7 @@
     color: #FFFFFF;
 
 }
-
+/*Style des boutons*/
 .btn{
     padding: 2% 5% 2% 5%;
     border-radius: 15px;
@@ -40,14 +41,14 @@
 .btn:hover{
     background-color: #824444;
 }
-
+/*css de la class contenant les element de choix du joueur*/
 .MidBox{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
-
+/*css pour la selection des niveaux avec les radios buttons*/
 .radio{
     display: inline-flex;
     overflow: hidden;
@@ -80,6 +81,7 @@
 .radio__label:hover{
     background-color: #824444;
 }
+/*css pour le slider des des taille de carte*/
 .size{
     display: flex;
     justify-content: center;
@@ -109,6 +111,7 @@
     cursor: pointer;
     z-index: 3;
 }
+/*Css pour le checkbox pour les mur*/
 .btnWall{
     padding: 5%;
     display: flex;
@@ -150,13 +153,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: #FFFFFF;
-}
-
-.GAMEOVER-content h1{
-    font-size: 2.5em;
-    margin: 0;
-    margin-top: 15px;
 }
 
 .GAMEOVER-content button{

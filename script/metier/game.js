@@ -1,3 +1,7 @@
+/**
+ * @author Valentin SEGALLA, François GRAUX
+ */
+
 import { Snake } from "./Snake.js";
 import { Fruit } from "./Fruit.js";
 import { HighScore } from "./HighScore.js";
@@ -30,20 +34,50 @@ oldScore.createStorage();
  * Classe contenant toute les méthodes fonctionnelles du jeu
  */
 class Game {
+    /**
+     * constructeur pour initialiser l'instance de la classe Game
+     */
     constructor() {
+        /**
+         * Attibut pour dessiner sur le canvs
+         * */
         this.context = null;
+        /**
+         * Attribut qui contiendra l'instance de fruit
+         */
         this.fruit = null;
+        /**
+         * Attribut qui contiendra l'instance de Snake
+         */
         this.snake = null;
+        /**
+         * Attribut correspondant au tableau representant le monde ou le Snake et les fruit evolueront
+         * @type {*[]}
+         */
         this.world = [];
+        /**
+         * Attribut correspondant à la largeur d'un block
+         */
         this.sizeBlockY = null;
+        /**
+         * Attribut correspondant à la longeur d'un block
+         */
         this.sizeBlockX = null;
+        /**
+         * Attribut correspondant au score du joueur en jouant
+         * @type {number}
+         */
         this.score = 0;
+        /**
+         * Attribut correspondant au nombre de fruit que le joueur aura mangé en jouant
+         * @type {number}
+         */
         this.nbFruit = 0;
     }
 
     /**
      * Méthode pour rendre l'état d'origine à la carte (toutes les cases a 'EMPTY")
-     * @param size attribut qui represente la tableau qui compose la carte
+     * @param size variable qui represente la tableau qui compose la carte
      */
     resetWorld(size) {
         this.world = [];
@@ -119,7 +153,7 @@ class Game {
 
     /**
      * Méthode pour definir la postion des murs
-     * @param tabPosition attribut qui represente toutes les positions dans la tableau 'wall' du fichier Json
+     * @param tabPosition variable qui represente toutes les positions dans le tableau 'wall' du fichier Json
      */
     drawWall(tabPosition) {
         for (let i = 0; i < tabPosition.length; i++) {
@@ -134,9 +168,9 @@ class Game {
 
     /**
      * Méthode pour definir la position du fruit si il est manger ainsi que de faire deplacer le serpent en fonctiond de la vitesse entrée en paramêtre
-     * @param speed Attribut qui représente la vitesse a laquele le serpent vas ce dépalcer
-     * @param wallList Attribut qui représente ma liste de l'essemble des murs
-     * @param time
+     * @param speed variable qui représente la vitesse a laquele le serpent vas ce dépalcer
+     * @param wallList variable qui représente ma liste de l'essemble des murs
+     * @param time variable correspondante a l'id du setTimeOut
      */
     step(speed, wallList, time) {
         if (this.snake.eatFruit(this.fruit) || this.fruit.position.join() === [].join()) {
@@ -155,9 +189,9 @@ class Game {
 
     /**
      * Méthode qui lance le fonctionnement du jeux
-     * @param dimension Attribut qui représente la taille de la carte
-     * @param positionSnake Attribut qui représente la position du seprent
-     * @param wallList Attribut qui représente la liste des murs
+     * @param dimension variable qui représente la taille de la carte
+     * @param positionSnake variable qui représente la position initial du seprent
+     * @param wallList variable qui représente la liste des murs
      */
     start(dimension, positionSnake, wallList) {
         this.resetWorld(dimension);
@@ -181,12 +215,19 @@ class Game {
         this.fruit = new Fruit(dimension);
     }
 
-    //fonction pour effacer un élément sur le plateau
+    /**
+     *  Méthode pour effacer un élément sur le plateau
+     */
     deletePosition(position) {
         if (position.join() != [])
             this.world[position[0]][position[1]] = 'EMPTY';
     }
 
+    /**
+     * Méthode qui permet d'arrêter le jeux
+     * @param time variable correspondante a l'id du setTimeOut
+     * @returns {boolean} renvoie une boolean True si appeler
+     */
     stop(time) {
         createGameOver();
         this.snake = null;
@@ -196,8 +237,8 @@ class Game {
 
     /**
      * méthode qui permet de definir quand le joueur perds la partie
-     * @param wallList Attribut qui représente la liste des position des mur;
-     * @param time valeur su Timeout de la page
+     * @param wallList variable qui représente la liste des position des mur;
+     * @param time variable correspondante a l'id du setTimeOut
      * @returns {boolean}  renvoie false si pas de condition
      */
     gameOver(wallList,time){
