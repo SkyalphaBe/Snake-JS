@@ -1,4 +1,4 @@
-const audio = document.getElementById("eatFruit");
+const audio = document.getElementById("audio");
 
 /**
  * Classe correspondant au serpent
@@ -78,6 +78,7 @@ const audio = document.getElementById("eatFruit");
         } else {
             this.score++;
             score.innerHTML = "Score : " + this.score * 100;
+            audio.src = '../../sound/eatFruit.mp3'
             audio.play();
             nbFruit.innerHTML = this.score;
         }

@@ -100,6 +100,7 @@
     border-radius: 15px;
     padding: 1%;
     width: 15vw;
+    background-color: #FFFFFF;
 }
 
 #slider::-webkit-slider-thumb{
@@ -111,7 +112,7 @@
     cursor: pointer;
     z-index: 3;
 }
-/*Css pour le checkbox pour les mur*/
+/*Css pour le checkbox pour les murs*/
 .btnWall{
     padding: 5%;
     display: flex;
@@ -120,7 +121,7 @@
 }
 #murCheck{
     -webkit-appearance: none;
-    background-color: #fff;
+    background-color: #FFFFFF;
     font: inherit;
     color: currentColor;
     width: 1.15em;
@@ -129,6 +130,7 @@
     border-radius: 0.40em;
     transform: translateY(-0.075em);
     margin-right: 10px;
+    
 }
 #murCheck:checked{
     -webkit-appearance: none;
@@ -144,8 +146,9 @@
     z-index: 1;
     width: 20vw;
     overflow: auto;
-    background-color: #a82323;
+    background-color: rgba(0, 0, 0, 0.75);
     border-radius: 15px;
+    
 }
 
 .GAMEOVER-content{
@@ -157,4 +160,18 @@
 
 .GAMEOVER-content button{
     margin: 5%;
+}
+
+.btnGameOver{
+    padding: 2% 5% 2% 5%;
+    border-radius: 15px;
+    border: 0;
+    font-size: 1em;
+    color: #000000;
+    background-color: #ffffff;
+    transition: 0.3s;
+}
+
+.btnGameOver:hover{
+    background-color: #62f3af;
 }
