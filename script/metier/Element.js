@@ -5,6 +5,7 @@
 import {oldScore} from "./game.js";
 const sizeBoard = document.querySelector("input[type=range]");
 const menu = document.getElementById("myModal");
+const audio = document.getElementById("audio");
 
 /**
  * méthode pour créer et insérer dans le DOM le header ainsi que le footeur
@@ -86,7 +87,7 @@ function deleteHeadFoot(){
  * Méthode pour supprimer le canvas du DOM
  */
 function deleteCanvas(){
-    document.querySelector("canvas").remove();
+    document.getElementById("snakeGame").remove();
 }
 
 /**
@@ -108,7 +109,7 @@ function createGameOver(){
     img.style.width = '80%';
 
     newBtn.id="menuBtn";
-    newBtn.className="btn";
+    newBtn.className="btnGameOver";
     newBtn.textContent="MENU";
 
     newGO.appendChild(newGOcontent);
@@ -118,14 +119,17 @@ function createGameOver(){
     /**
      * Listener pour revenir au menu principale ainsi que supprimer les élèments de la page de jeux du DOM
      */
-    newGO.querySelector(".btn").addEventListener("click",()=>{
+    newGO.querySelector(".btnGameOver").addEventListener("click",()=>{
         newGO.remove();
+        document.getElementById("canvasAccueil").style.display="block";
         deleteHeadFoot();
         deleteCanvas();
         menu.style.display="block";
 
     });
     document.getElementsByTagName("body")[0].insertBefore(newGO,document.querySelector("script"));
+    audio.src='../../sound/gameover.mp3';
+    audio.play();
 }
 
 export {createCanvas,createGameOver,createHeadFoot,deleteCanvas,deleteHeadFoot,sizeBoard,menu};

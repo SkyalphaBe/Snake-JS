@@ -5,7 +5,7 @@
 import { Snake } from "./Snake.js";
 import { Fruit } from "./Fruit.js";
 import { HighScore } from "./HighScore.js";
-import {createCanvas,createGameOver,createHeadFoot,deleteCanvas,deleteHeadFoot,sizeBoard,menu} from "./Element.js";
+import {createCanvas,createGameOver,createHeadFoot,sizeBoard,menu} from "./Element.js";
 
 const appleCanva = document.getElementById("appleCanva");
 const wallcheckBox = document.getElementById("murCheck");
@@ -201,12 +201,14 @@ class Game {
         createHeadFoot();
         createCanvas();
         menu.style.display = "none";
+        document.getElementById("canvasAccueil").style.display="none";
+
 
         let plateau = document.getElementById("snakeGame");
         this.context = snakeGame.getContext("2d");
 
-        this.sizeBlockX = plateau.height / this.world.length;
-        this.sizeBlockY = plateau.width / this.world[1].length;
+        this.sizeBlockY = plateau.height / this.world.length;
+        this.sizeBlockX = plateau.width / this.world[1].length;
 
         this.score = document.getElementById("foot").children.item(0);
         this.nbFruit = document.getElementById("fruit").children.item(1);
