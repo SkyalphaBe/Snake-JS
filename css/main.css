@@ -8,14 +8,9 @@ body{
     
 
 }
-.game{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
 .header{
-    display: none;
+    display: flex;
     justify-content: center;
     background-color: #57996d;
     width: 25%;
@@ -34,7 +29,7 @@ body{
 }
 
 .footer{
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
     background-color: #57996d;
@@ -69,14 +64,5 @@ body{
 }
 
 canvas{
-    height: 50vh;
-    width: 30vw;
     border-radius: 10px;
-}
-
-.content{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
 }

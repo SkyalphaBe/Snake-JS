@@ -1,5 +1,6 @@
+/*style pour le menu flottant*/
 .modal{
-    display: none;
+    display: block;
     position: fixed;
     z-index: 1;
     width: 35vw;
@@ -15,7 +16,7 @@
     margin: 5% 1% 5% 1%;
     border-radius: 15px;
 }
-
+/*style pour le contenu du menu*/
 .modal-Content{
     display: flex;
     align-items: center;
@@ -26,11 +27,7 @@
     color: #FFFFFF;
 
 }
-
-.modal-Content h1{
-    font-weight: bold;
-}
-
+/*Style des boutons*/
 .btn{
     padding: 2% 5% 2% 5%;
     border-radius: 15px;
@@ -39,25 +36,19 @@
     color: #FFFFFF;
     background-color: #6c706d;
     transition: 0.3s;
-    margin-top: 5%;
-
 }
 
 .btn:hover{
     background-color: #824444;
 }
-
+/*css de la class contenant les element de choix du joueur*/
 .MidBox{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
-.close{
-    color: brown;
-    float: right;
-
-}
+/*css pour la selection des niveaux avec les radios buttons*/
 .radio{
     display: inline-flex;
     overflow: hidden;
@@ -90,16 +81,17 @@
 .radio__label:hover{
     background-color: #824444;
 }
-.taille{
+/*css pour le slider des des taille de carte*/
+.size{
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
-.taille-option{
+.size-option{
     display: flex;
     justify-content: space-between;
-    width: 20vw;
+    width: 15vw;
 }
 
 #slider{
@@ -107,7 +99,7 @@
     outline: none;
     border-radius: 15px;
     padding: 1%;
-    width: 20vw;
+    width: 15vw;
 }
 
 #slider::-webkit-slider-thumb{
@@ -119,11 +111,33 @@
     cursor: pointer;
     z-index: 3;
 }
+/*Css pour le checkbox pour les mur*/
+.btnWall{
+    padding: 5%;
+    display: flex;
+    align-items: center;
 
+}
+#murCheck{
+    -webkit-appearance: none;
+    background-color: #fff;
+    font: inherit;
+    color: currentColor;
+    width: 1.15em;
+    height: 1.15em;
+    border: 0.15em solid currentColor;
+    border-radius: 0.40em;
+    transform: translateY(-0.075em);
+    margin-right: 10px;
+}
+#murCheck:checked{
+    -webkit-appearance: none;
+    background-color: #824444;
+}
 /* game over part */
 
 .GAMEOVER{
-    display: none;
+    display: block;
     position: fixed;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bolder;
@@ -139,7 +153,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: #FFFFFF;
 }
 
 .GAMEOVER-content button{

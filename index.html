@@ -6,58 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/modal.css">
     <link rel="stylesheet" href="css/main.css">
-
+    <audio id="eatFruit" src="./sound/eatFruit.mp3"></audio>
     <title>Snake</title>
 </head>
 <body>
-    <section class="header" id="head">
-        <h1>SNAKE!</h1>
-    </section>
-    <section class="game">
-        <div id="gameOver" class="GAMEOVER">
-            <div class="GAMEOVER-content">
-                <H1>GAME OVER</H1>
-                <button class="btn" id="menuBtn">MENU</button>
-            </div>
-        </div>
-        <div class="content" id="game">
-            <canvas id="snakeGame"></canvas>
-        </div>
-    </section>
     <section id="myModal" class="modal">
         <div class="modal-Content">
             <h1>SNAKE!</h1>
             <section class="MidBox">
                 <h2>Choisir une difficulté</h2>
                 <div class="radio">
-                    <input class="radio__input" type="radio" value="500" name="myRadio" id="myRadio1">
+                    <input class="radio__input" type="radio" value="1" name="myRadio" id="myRadio1" checked="true">
                     <label class="radio__label" for="myRadio1">Facile</label>
-                    <input class="radio__input" type="radio" value="250" name="myRadio" id="myRadio2">
+                    <input class="radio__input" type="radio" value="2" name="myRadio" id="myRadio2">
                     <label class="radio__label" for="myRadio2">Moyen</label>
-                    <input class="radio__input" type="radio" value="150" name="myRadio" id="myRadio3">
+                    <input class="radio__input" type="radio" value="3" name="myRadio" id="myRadio3">
                     <label class="radio__label" for="myRadio3">Difficile</label>
                 </div>
                 <h2>Choisir la taille du terrain</h2>
-                <div class="taille">
-                    <div class="taille-option">
+                <div class="size">
+                    <div class="size-option">
                         <p>Petit</p>
-                        <p>Moyen</p>
                         <p>Grand</p>
                     </div>
-                    <input type="range" min="1" max="3" value="3" id="slider">
+                    <input type="range" min="1" max="2" value="1" id="slider">
+                </div>
+                <div class="btnWall">
+                    <input type="checkbox" name="Mur" id="murCheck">
+                    <label>Sans mur</label>
                 </div>
             </section>
             <button class="btn" id="startBtn">START</button>
         </div>
     </section>
-    <section class="footer" id="foot">
-        <h2>Score : 0</h2>
-        <div class="nbFruit" id="fruit">
-            <img id="apple" src="./Image/apple.png" alt="apple">
-            <h2> 0</h2>
-        </div>
-    </section>
-    <script src="script/game.js"></script>
-    <script src="script/modal.js"></script>
+    <img id="appleCanva" src="./Image/apple.png" style="display: none;">
+    <script type="module" src="script/main.js"></script>
 </body>
 </html>
