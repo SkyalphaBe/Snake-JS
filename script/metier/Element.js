@@ -86,7 +86,7 @@ function deleteHeadFoot(){
  * Méthode pour supprimer le canvas du DOM
  */
 function deleteCanvas(){
-    document.querySelector("canvas").remove();
+    document.getElementById("snakeGame").remove();
 }
 
 /**
@@ -120,6 +120,7 @@ function createGameOver(){
      */
     newGO.querySelector(".btn").addEventListener("click",()=>{
         newGO.remove();
+        document.getElementById("canvasAccueil").style.display="block";
         deleteHeadFoot();
         deleteCanvas();
         menu.style.display="block";
